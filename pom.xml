@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.6</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<modules>
+		<module>core</module>
+		<module>exception</module>
+		<module>config</module>
+		<module>actuator</module>
+		<module>message</module>
+		<module>file-upload</module>
+		<module>extra</module>
+	</modules>
+	<groupId>com.yjy</groupId>
+	<artifactId>climb</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>climb</name>
+	<developers>
+		<developer>
+			<name>南京市医家医健康管理有限公司</name>
+			<email>climb@yjy-group.com</email>
+			<url>https://www.yjy-group.com</url>
+		</developer>
+
+		<developer>
+			<name>赵远</name>
+			<email>hythzx@foxmail.com</email>
+		</developer>
+	</developers>
+	<description>climb</description>
+	<packaging>pom</packaging>
+	<properties>
+		<java.version>17</java.version>
+		<jhipster-dependencies.version>7.8.1</jhipster-dependencies.version>
+		<spring-boot.version>2.6.6</spring-boot.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>tech.jhipster</groupId>
+				<artifactId>jhipster-dependencies</artifactId>
+				<version>${jhipster-dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- jhipster-needle-maven-add-dependency-management -->
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+
+		<!--JHipster的核心库-->
+		<dependency>
+			<groupId>tech.jhipster</groupId>
+			<artifactId>jhipster-framework</artifactId>
+		</dependency>
+		<!-- 该模块下需要依赖一些共用模块-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!--默认引用Lombok，简化Java Bean开发-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!--引入Spring MVC支持-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!--Apache Commons Lang3 封装了常用的工具类-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<!--引入Google Guava工具类-->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>31.1-jre</version>
+		</dependency>
+
+		<!-- 引入Hutool工具类-->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>5.8.3</version>
+		</dependency>
+
+		<!--引入hibernate validation,用于Bean校验-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!--引入 Spring Security框架，用于安全验证-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- SpringBoot 测试-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<repositories>
+		<repository>
+			<url>http://nexus.aiyuninfo.com/content/groups/maven-public/</url>
+			<name>aiyun</name>
+			<id>aiyun</id>
+		</repository>
+	</repositories>
+
+
+	<pluginRepositories>
+		<pluginRepository>
+			<url>http://nexus.aiyuninfo.com/content/groups/maven-public/</url>
+			<name>aiyun</name>
+			<id>aiyun</id>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
