@@ -17,6 +17,7 @@
 		<module>message</module>
 		<module>file-upload</module>
 		<module>extra</module>
+		<module>system</module>
 	</modules>
 	<groupId>com.yjy</groupId>
 	<artifactId>climb</artifactId>
