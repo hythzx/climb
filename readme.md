@@ -2,11 +2,11 @@
 
 ### 框架/工具整合:
 - [x] 集成mapstruct
-- [ ] 集成swagger
-- [ ] 集成JPA
-- [ ] 集成连接池
+- [x] 集成swagger
+- [x] 集成JPA
+- [x] 集成连接池
 - [ ] 集成Redis-Redission
-- [ ] 集成日志采集
+- [x] 集成日志采集
 - [ ] 集成liquibase
 - [ ] 集成websocket
 - [ ] 集成微信公众号
@@ -19,6 +19,7 @@
 - [ ] 集成ELK日志推送
 - [ ] 集成Prometheus/AlertManager/Grafana
 - [ ] 集成Office文档处理工具
+- [ ] 集成Excel导出
 
 
 ### 业务设计

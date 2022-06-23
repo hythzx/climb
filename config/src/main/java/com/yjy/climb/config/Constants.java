@@ -12,5 +12,7 @@ public final class Constants {
     public static final String SYSTEM = "system";
     public static final String DEFAULT_LANGUAGE = "zh-cn";
 
+	public static final String X_TOKEN_HEADER = "Authorization";
+
     private Constants() {}
 }

@@ -1,3 +1,9 @@
+logging:
+  level:
+    ROOT: DEBUG
+    tech.jhipster: DEBUG
+    org.hibernate.SQL: DEBUG
+    com.yjy.climb: DEBUG
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
