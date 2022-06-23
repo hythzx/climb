@@ -15,7 +15,6 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<jaxb-runtime.version>2.3.3</jaxb-runtime.version>
-		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<lombok.version>1.18.22</lombok.version>
 	</properties>
 

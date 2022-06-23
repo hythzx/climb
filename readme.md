@@ -7,7 +7,7 @@
 - [x] 集成连接池
 - [x] 集成Redis-Redission
 - [x] 集成日志采集
-- [ ] 集成liquibase
+- [x] 集成liquibase
 - [ ] 集成websocket
 - [ ] 集成微信公众号
 - [ ] 集成支付
