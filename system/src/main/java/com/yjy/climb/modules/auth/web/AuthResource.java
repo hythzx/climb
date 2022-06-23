@@ -75,5 +75,4 @@ public class AuthResource {
 			this.idToken = idToken;
 		}
 	}
-
 }
