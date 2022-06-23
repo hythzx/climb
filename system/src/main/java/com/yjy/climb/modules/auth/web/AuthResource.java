@@ -18,10 +18,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api")
+@RestController
 @Tag(name = "认证", description = "通过用户名密码获取令牌")
+@RequestMapping("/api")
 public class AuthResource {
 
 	private final TokenProvider tokenProvider;
@@ -49,34 +51,11 @@ public class AuthResource {
 	}
 
 
+	@Data
 	static class LoginVM{
 		private String username;
 		private String password;
 		private Boolean rememberMe;
-
-		public String getUsername() {
-			return username;
-		}
-
-		public void setUsername(String username) {
-			this.username = username;
-		}
-
-		public String getPassword() {
-			return password;
-		}
-
-		public void setPassword(String password) {
-			this.password = password;
-		}
-
-		public Boolean getRememberMe() {
-			return rememberMe;
-		}
-
-		public void setRememberMe(Boolean rememberMe) {
-			this.rememberMe = rememberMe;
-		}
 	}
 
 	/**
