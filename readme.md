@@ -5,7 +5,7 @@
 - [x] 集成swagger
 - [x] 集成JPA
 - [x] 集成连接池
-- [ ] 集成Redis-Redission
+- [x] 集成Redis-Redission
 - [x] 集成日志采集
 - [ ] 集成liquibase
 - [ ] 集成websocket

@@ -4,11 +4,10 @@ package com.yjy.climb.web.resource;
 import com.yjy.climb.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +22,10 @@ public class ApiResource {
 
 	private final Logger log = getLogger(ApiResource.class);
 
-	private final CacheManager cacheManager;
+	private final RedissonClient redissonClient;
 
-
-	public ApiResource(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
+	public ApiResource(RedissonClient redissonClient) {
+		this.redissonClient = redissonClient;
 	}
 
 	@GetMapping("/hello")
@@ -39,10 +37,18 @@ public class ApiResource {
 	@GetMapping("/cache")
 	@Cacheable(value = "api", keyGenerator = "keyGenerator")
 	public String getCache(String key, String value){
-		Cache cache = cacheManager.getCache("test");
-		assert cache != null;
-		cache.put(key, value);
 		log.info("key: {}, value: {}", key, value);
+		return value;
+	}
+
+	@GetMapping("/redis")
+	public String redis(String key, String value){
+		RMap<String, String> rs = redissonClient.getMap("rs");
+		String s = rs.get(key);
+		if (s == null) {
+			rs.put(key, value);
+			log.info("缓存不存在");
+		}
 		return value;
 	}
 }

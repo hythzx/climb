@@ -9,6 +9,7 @@ import javax.cache.expiry.Duration;
 
 import org.hibernate.cache.jcache.ConfigSettings;
 import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
@@ -33,42 +34,51 @@ public class CacheConfiguration {
     private GitProperties gitProperties;
     private BuildProperties buildProperties;
 
-    @Bean
-    public javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration(JHipsterProperties jHipsterProperties) {
-        MutableConfiguration<Object, Object> jcacheConfig = new MutableConfiguration<>();
+	@Bean
+	public RedissonClient redissonClient(JHipsterProperties jHipsterProperties){
+		Config config = getRedissionConfig(jHipsterProperties);
+		return Redisson.create(config);
+	}
 
-        URI redisUri = URI.create(jHipsterProperties.getCache().getRedis().getServer()[0]);
+	@Bean
+	public javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration(JHipsterProperties jHipsterProperties, RedissonClient redissonClient) {
+		MutableConfiguration<Object, Object> jcacheConfig = new MutableConfiguration<>();
+		jcacheConfig.setStatisticsEnabled(true);
+		jcacheConfig.setExpiryPolicyFactory(
+				CreatedExpiryPolicy.factoryOf(new Duration(TimeUnit.SECONDS, jHipsterProperties.getCache().getRedis().getExpiration()))
+		);
+		return RedissonConfiguration.fromInstance(redissonClient, jcacheConfig);
+	}
 
-        Config config = new Config();
-        if (jHipsterProperties.getCache().getRedis().isCluster()) {
-            ClusterServersConfig clusterServersConfig = config
-                .useClusterServers()
-                .setMasterConnectionPoolSize(jHipsterProperties.getCache().getRedis().getConnectionPoolSize())
-                .setMasterConnectionMinimumIdleSize(jHipsterProperties.getCache().getRedis().getConnectionMinimumIdleSize())
-                .setSubscriptionConnectionPoolSize(jHipsterProperties.getCache().getRedis().getSubscriptionConnectionPoolSize())
-                .addNodeAddress(jHipsterProperties.getCache().getRedis().getServer());
+	private Config getRedissionConfig(JHipsterProperties jHipsterProperties){
+		URI redisUri = URI.create(jHipsterProperties.getCache().getRedis().getServer()[0]);
 
-            if (redisUri.getUserInfo() != null) {
-                clusterServersConfig.setPassword(redisUri.getUserInfo().substring(redisUri.getUserInfo().indexOf(':') + 1));
-            }
-        } else {
-            SingleServerConfig singleServerConfig = config
-                .useSingleServer()
-                .setConnectionPoolSize(jHipsterProperties.getCache().getRedis().getConnectionPoolSize())
-                .setConnectionMinimumIdleSize(jHipsterProperties.getCache().getRedis().getConnectionMinimumIdleSize())
-                .setSubscriptionConnectionPoolSize(jHipsterProperties.getCache().getRedis().getSubscriptionConnectionPoolSize())
-                .setAddress(jHipsterProperties.getCache().getRedis().getServer()[0]);
+		Config config = new Config();
+		if (jHipsterProperties.getCache().getRedis().isCluster()) {
+			ClusterServersConfig clusterServersConfig = config
+					.useClusterServers()
+					.setMasterConnectionPoolSize(jHipsterProperties.getCache().getRedis().getConnectionPoolSize())
+					.setMasterConnectionMinimumIdleSize(jHipsterProperties.getCache().getRedis().getConnectionMinimumIdleSize())
+					.setSubscriptionConnectionPoolSize(jHipsterProperties.getCache().getRedis().getSubscriptionConnectionPoolSize())
+					.addNodeAddress(jHipsterProperties.getCache().getRedis().getServer());
 
-            if (redisUri.getUserInfo() != null) {
-                singleServerConfig.setPassword(redisUri.getUserInfo().substring(redisUri.getUserInfo().indexOf(':') + 1));
-            }
-        }
-        jcacheConfig.setStatisticsEnabled(true);
-        jcacheConfig.setExpiryPolicyFactory(
-            CreatedExpiryPolicy.factoryOf(new Duration(TimeUnit.SECONDS, jHipsterProperties.getCache().getRedis().getExpiration()))
-        );
-        return RedissonConfiguration.fromInstance(Redisson.create(config), jcacheConfig);
-    }
+			if (redisUri.getUserInfo() != null) {
+				clusterServersConfig.setPassword(redisUri.getUserInfo().substring(redisUri.getUserInfo().indexOf(':') + 1));
+			}
+		} else {
+			SingleServerConfig singleServerConfig = config
+					.useSingleServer()
+					.setConnectionPoolSize(jHipsterProperties.getCache().getRedis().getConnectionPoolSize())
+					.setConnectionMinimumIdleSize(jHipsterProperties.getCache().getRedis().getConnectionMinimumIdleSize())
+					.setSubscriptionConnectionPoolSize(jHipsterProperties.getCache().getRedis().getSubscriptionConnectionPoolSize())
+					.setAddress(jHipsterProperties.getCache().getRedis().getServer()[0]);
+
+			if (redisUri.getUserInfo() != null) {
+				singleServerConfig.setPassword(redisUri.getUserInfo().substring(redisUri.getUserInfo().indexOf(':') + 1));
+			}
+		}
+		return config;
+	}
 
     @Bean
     public HibernatePropertiesCustomizer hibernatePropertiesCustomizer(javax.cache.CacheManager cm) {
