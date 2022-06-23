@@ -11,6 +11,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+import com.yjy.climb.exception.BadRequestAlertException;
+import com.yjy.climb.exception.EmailAlreadyUsedException;
+import com.yjy.climb.exception.ErrorConstants;
+import com.yjy.climb.exception.FieldErrorVM;
+import com.yjy.climb.exception.InvalidPasswordException;
 import org.apache.commons.lang3.StringUtils;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
@@ -34,6 +39,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
+
+import static com.yjy.climb.exception.ErrorConstants.ERR_MSG;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
@@ -92,6 +99,26 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
     }
 
+	@ExceptionHandler
+	public ResponseEntity<Problem> handleNullPointException(NullPointerException ex, NativeWebRequest request){
+		Problem problem = Problem
+				.builder()
+				.withTitle(ERR_MSG)
+				.withStatus(defaultConstraintViolationStatus())
+				.build();
+		return create(ex, problem, request);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<Problem> handleRuntimeException(RuntimeException ex, NativeWebRequest request){
+		Problem problem = Problem
+				.builder()
+				.withTitle(ERR_MSG)
+				.withStatus(defaultConstraintViolationStatus())
+				.build();
+		return create(ex, problem, request);
+	}
+
     @Override
     public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
@@ -110,7 +137,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         Problem problem = Problem
             .builder()
             .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
-            .withTitle("Method argument not valid")
+            .withTitle("方法参数无效")
             .withStatus(defaultConstraintViolationStatus())
             .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION)
             .with(FIELD_ERRORS_KEY, fieldErrors)
@@ -166,7 +193,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                     .withType(type)
                     .withTitle(status.getReasonPhrase())
                     .withStatus(status)
-                    .withDetail("Unable to convert http message")
+                    .withDetail(ERR_MSG)
                     .withCause(
                         Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
                     );
@@ -177,7 +204,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                     .withType(type)
                     .withTitle(status.getReasonPhrase())
                     .withStatus(status)
-                    .withDetail("Failure during data access")
+                    .withDetail("数据访问失败")
                     .withCause(
                         Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
                     );
@@ -188,7 +215,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                     .withType(type)
                     .withTitle(status.getReasonPhrase())
                     .withStatus(status)
-                    .withDetail("Unexpected runtime exception")
+                    .withDetail(ERR_MSG)
                     .withCause(
                         Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
                     );

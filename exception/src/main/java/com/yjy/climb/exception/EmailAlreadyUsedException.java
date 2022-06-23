@@ -1,10 +1,10 @@
-package com.yjy.climb.web.resource.errors;
+package com.yjy.climb.exception;
 
 public class EmailAlreadyUsedException extends BadRequestAlertException {
 
     private static final long serialVersionUID = 1L;
 
     public EmailAlreadyUsedException() {
-        super(ErrorConstants.EMAIL_ALREADY_USED_TYPE, "Email is already in use!", "userManagement", "emailexists");
+        super(ErrorConstants.EMAIL_ALREADY_USED_TYPE, "邮箱已被使用", "userManagement", "emailexists");
     }
 }

@@ -1,4 +1,4 @@
-package com.yjy.climb.web.resource.errors;
+package com.yjy.climb.exception;
 
 import java.net.URI;
 
@@ -6,6 +6,8 @@ public final class ErrorConstants {
 
     public static final String ERR_CONCURRENCY_FAILURE = "error.concurrencyFailure";
     public static final String ERR_VALIDATION = "error.validation";
+
+	public static final String ERR_MSG = "系统错误，请稍后再试";
     public static final String PROBLEM_BASE_URL = "https://climb.yjy-group.com/problem";
     public static final URI DEFAULT_TYPE = URI.create(PROBLEM_BASE_URL + "/problem-with-message");
     public static final URI CONSTRAINT_VIOLATION_TYPE = URI.create(PROBLEM_BASE_URL + "/constraint-violation");

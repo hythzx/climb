@@ -1,4 +1,4 @@
-package com.yjy.climb.web.resource.errors;
+package com.yjy.climb.exception;
 
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
@@ -8,6 +8,6 @@ public class InvalidPasswordException extends AbstractThrowableProblem {
     private static final long serialVersionUID = 1L;
 
     public InvalidPasswordException() {
-        super(ErrorConstants.INVALID_PASSWORD_TYPE, "Incorrect password", Status.BAD_REQUEST);
+        super(ErrorConstants.INVALID_PASSWORD_TYPE, "密码错误", Status.BAD_REQUEST);
     }
 }

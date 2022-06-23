@@ -1,4 +1,4 @@
-package com.yjy.climb.web.resource.errors;
+package com.yjy.climb.exception;
 
 import java.io.Serializable;
 
