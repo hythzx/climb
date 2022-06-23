@@ -1,5 +1,8 @@
 package org.yjy.climb.mapstruct;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.Mapper;
@@ -12,21 +15,29 @@ public class MapstructTest {
 
 	private Bar bar;
 
+	private BarLom barLom;
+
 	private IMapper iMapper;
+
+	String name = "aaaaaaaaaa";
+	Integer age = 23;
 
 	@BeforeEach
 	public void setUp(){
-		bar = new Bar();
+		bar = new Bar(name, age);
+		barLom = new BarLom(name, age);
 		iMapper = Mappers.getMapper(IMapper.class);
 	}
 
 	@Test
 	public void testMap(){
-		String name = "aaaaaaaaaa";
-		Integer age = 23;
-		bar.setName(name);
-		bar.setAge(age);
 		Foo foo = iMapper.toFoo(bar);
+		assert foo!= null && name.equals(foo.getName()) && age.equals(foo.getAge());
+	}
+
+	@Test
+	public void testMapLom(){
+		FooLom foo = iMapper.toFooLom(barLom);
 		assert foo!= null && name.equals(foo.getName()) && age.equals(foo.getAge());
 	}
 }
@@ -34,6 +45,14 @@ public class MapstructTest {
 class Foo{
 	private String name;
 	private Integer age;
+
+	public Foo() {
+	}
+
+	public Foo(String name, Integer age) {
+		this.name = name;
+		this.age = age;
+	}
 
 	public String getName() {
 		return name;
@@ -56,6 +75,14 @@ class Bar{
 	private String name;
 	private Integer age;
 
+	public Bar() {
+	}
+
+	public Bar(String name, Integer age) {
+		this.name = name;
+		this.age = age;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -73,7 +100,24 @@ class Bar{
 	}
 }
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class FooLom{
+	private String name;
+	private Integer age;
+}
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class BarLom{
+	private String name;
+	private Integer age;
+}
 @Mapper
 interface IMapper{
 	Foo toFoo(Bar bar);
+
+	FooLom toFooLom(BarLom barLom);
 }
