@@ -1,0 +1,17 @@
+${AnsiColor.GREEN}           ${AnsiColor.RED}   ,--,   ${AnsiColor.BLUE}        ${AnsiColor.CYAN}                ${AnsiColor.RED}
+${AnsiColor.GREEN}           ${AnsiColor.RED},---.'|   ${AnsiColor.BLUE}        ${AnsiColor.CYAN}          ____  ${AnsiColor.RED}
+${AnsiColor.GREEN}  ,----..  ${AnsiColor.RED}|   | :   ${AnsiColor.BLUE}   ,---,${AnsiColor.CYAN}        ,'  , `.${AnsiColor.RED}    ,---,.
+${AnsiColor.GREEN} /   /   \ ${AnsiColor.RED}:   : |   ${AnsiColor.BLUE},`--.' |${AnsiColor.CYAN}     ,-+-,.' _ |${AnsiColor.RED}  ,'  .'  \
+${AnsiColor.GREEN}|   :     :${AnsiColor.RED}|   ' :   ${AnsiColor.BLUE}|   :  :${AnsiColor.CYAN}  ,-+-. ;   , ||${AnsiColor.RED},---.' .' |
+${AnsiColor.GREEN}.   |  ;. /${AnsiColor.RED};   ; '   ${AnsiColor.BLUE}:   |  '${AnsiColor.CYAN} ,--.'|'   |  ;|${AnsiColor.RED}|   |  |: |
+${AnsiColor.GREEN}.   ; /--` ${AnsiColor.RED}'   | |__ ${AnsiColor.BLUE}|   :  |${AnsiColor.CYAN}|   |  ,', |  ':${AnsiColor.RED}:   :  :  /
+${AnsiColor.GREEN};   | ;    ${AnsiColor.RED}|   | :.'|${AnsiColor.BLUE}'   '  ;${AnsiColor.CYAN}|   | /  | |  ||${AnsiColor.RED}:   |    ;
+${AnsiColor.GREEN}|   : |    ${AnsiColor.RED}'   :    ;${AnsiColor.BLUE}|   |  |${AnsiColor.CYAN}'   | :  | :  |,${AnsiColor.RED}|   :     \
+${AnsiColor.GREEN}.   | '___ ${AnsiColor.RED}|   |  ./ ${AnsiColor.BLUE}'   :  ;${AnsiColor.CYAN};   . |  ; |--' ${AnsiColor.RED}|   |   . |
+${AnsiColor.GREEN}'   ; : .'|${AnsiColor.RED};   : ;   ${AnsiColor.BLUE}|   |  '${AnsiColor.CYAN}|   : |  | ,    ${AnsiColor.RED}'   :  '; |
+${AnsiColor.GREEN}'   | '/  :${AnsiColor.RED}|   ,/    ${AnsiColor.BLUE}'   :  |${AnsiColor.CYAN}|   : '  |/     ${AnsiColor.RED}|   |  | ;
+${AnsiColor.GREEN}|   :    / ${AnsiColor.RED}'---'     ${AnsiColor.BLUE};   |.' ${AnsiColor.CYAN};   | |`-'      ${AnsiColor.RED}|   :   /
+${AnsiColor.GREEN} \   \ .'  ${AnsiColor.RED}          ${AnsiColor.BLUE}'---'   ${AnsiColor.CYAN}|   ;/          ${AnsiColor.RED}|   | ,'
+${AnsiColor.GREEN}  `---`    ${AnsiColor.RED}          ${AnsiColor.BLUE}        ${AnsiColor.CYAN}'---'           ${AnsiColor.RED}`----'
+
+${AnsiColor.BRIGHT_BLUE} Climb Running Spring Boot ${spring-boot.version} ${AnsiColor.DEFAULT}
