@@ -1,19 +1,23 @@
-package com.yjy.system;
+package com.yjy.climb;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import com.yjy.system.commons.DefaultProfileUtil;
+import com.yjy.climb.commons.DefaultProfileUtil;
+import com.yjy.climb.config.ApplicationProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
 @SpringBootApplication
+@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class})
 public class SystemApplication {
 
 	private static final Logger log = getLogger(SystemApplication.class);

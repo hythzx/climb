@@ -1,4 +1,4 @@
-package com.yjy.system.web.resource;
+package com.yjy.climb.web.resource;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.yjy.system.commons;
+package com.yjy.climb.commons;
 
 /**
  * 应用默认常量

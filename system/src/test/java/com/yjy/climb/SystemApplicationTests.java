@@ -1,4 +1,4 @@
-package com.yjy.system;
+package com.yjy.climb;
 
 import org.junit.jupiter.api.Test;
 

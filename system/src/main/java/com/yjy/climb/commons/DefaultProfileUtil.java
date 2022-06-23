@@ -1,4 +1,4 @@
-package com.yjy.system.commons;
+package com.yjy.climb.commons;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.Environment;
