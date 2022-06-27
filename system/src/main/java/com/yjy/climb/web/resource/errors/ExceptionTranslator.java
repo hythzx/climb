@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import com.yjy.climb.exception.BadRequestAlertException;
+import com.yjy.climb.exception.CaptchaExpireException;
 import com.yjy.climb.exception.EmailAlreadyUsedException;
 import com.yjy.climb.exception.ErrorConstants;
 import com.yjy.climb.exception.FieldErrorVM;
@@ -114,6 +115,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 		Problem problem = Problem
 				.builder()
 				.withTitle(ERR_MSG)
+				.withStatus(defaultConstraintViolationStatus())
+				.build();
+		return create(ex, problem, request);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<Problem> handleCaptchaExpireException(CaptchaExpireException ex, NativeWebRequest request){
+		Problem problem = Problem
+				.builder()
+				.withTitle("验证码失效，请重新获取")
 				.withStatus(defaultConstraintViolationStatus())
 				.build();
 		return create(ex, problem, request);

@@ -24,6 +24,7 @@ public class SystemApplication {
 
 
 	public static void main(String[] args) {
+		System.setProperty("captcha_strategy", "gif");
 		SpringApplication app = new SpringApplication(SystemApplication.class);
 		DefaultProfileUtil.addDefaultProfile(app);
 		Environment env = app.run(args).getEnvironment();

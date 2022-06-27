@@ -84,6 +84,7 @@ public class SecurityConfiguration {
 					.authorizeRequests()
 					.antMatchers("/druid/**").permitAll()
 					.antMatchers("/public/**").permitAll()
+				    .antMatchers("/api/captcha/**").permitAll()
 					.antMatchers("/api/authenticate").permitAll()
 					.antMatchers("/api/register").permitAll()
 					.antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
