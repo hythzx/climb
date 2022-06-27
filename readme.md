@@ -8,6 +8,7 @@
 - [x] 集成Redis-Redission
 - [x] 集成日志采集
 - [x] 集成liquibase
+- [x] 集成验证码
 - [ ] 集成websocket
 - [ ] 集成微信公众号
 - [ ] 集成支付
@@ -16,7 +17,7 @@
 - [ ] 集成jib
 - [ ] 集成邮件/短信/APP消息推送
 - [ ] 集成APM
-- [ ] 集成ELK日志推送
+- [x] 集成ELK日志推送
 - [ ] 集成Prometheus/AlertManager/Grafana
 - [ ] 集成Office文档处理工具
 - [ ] 集成Excel导出
