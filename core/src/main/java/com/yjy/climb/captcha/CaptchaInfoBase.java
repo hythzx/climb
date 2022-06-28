@@ -2,7 +2,9 @@ package com.yjy.climb.captcha;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 
+@Builder
 public class CaptchaInfoBase implements ICaptchaInfo{
 
 	@JsonIgnore

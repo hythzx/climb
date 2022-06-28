@@ -9,20 +9,19 @@
 验证码使用方式:
 
 ```java
-import com.yjy.climb.captcha.ICaptcha;
+import com.yjy.climb.captcha.ICaptchaService;
 import com.yjy.climb.captcha.ICaptchaInfo;
-import com.yjy.climb.captcha.ICaptchaParam;
 
 public class CaptchaTest {
 
-	private final ICaptcha iCaptcha;
+	private final ICaptchaService iCaptchaService;
 
-	public CaptchaTest(ICaptcha iCaptcha) {
-		this.iCaptcha = iCaptcha;
+	public CaptchaTest(ICaptchaService iCaptchaService) {
+		this.iCaptchaService = iCaptchaService;
 	}
 
 	public ICaptchaInfo create() {
-        return iCaptcha.create();     // 使用默认参数
+		return iCaptchaService.create();     // 使用默认参数
 	}
 }
 

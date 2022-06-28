@@ -1,18 +1,20 @@
 package com.yjy.climb.captcha;
 
+import javax.transaction.NotSupportedException;
+
 import com.yjy.climb.exception.CaptchaExpireException;
 
 /**
  * 验证码接口
  */
-public interface ICaptcha {
+public interface ICaptchaService {
 
 
 	/**
 	 * 使用默认参数创建验证码
 	 * @return 验证码内容
 	 */
-	ICaptchaInfo create();
+	ICaptchaInfo create() throws NotSupportedException;
 
 	/**
 	 * 创建验证码

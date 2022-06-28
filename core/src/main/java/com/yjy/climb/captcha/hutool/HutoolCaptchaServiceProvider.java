@@ -1,17 +1,15 @@
 package com.yjy.climb.captcha.hutool;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import cn.hutool.captcha.AbstractCaptcha;
 import cn.hutool.captcha.CaptchaUtil;
-import com.yjy.climb.captcha.ICaptcha;
+import com.yjy.climb.captcha.AbstractCaptchaServiceBase;
+import com.yjy.climb.captcha.ICaptchaService;
 import com.yjy.climb.captcha.ICaptchaInfo;
 import com.yjy.climb.captcha.ICaptchaParam;
 import com.yjy.climb.captcha.ICaptchaPersistence;
 import com.yjy.climb.captcha.ImageCaptchaInfo;
-import com.yjy.climb.exception.CaptchaExpireException;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import org.springframework.stereotype.Service;
@@ -19,12 +17,12 @@ import org.springframework.stereotype.Service;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- *
+ * 使用hutool的验证码生成工具生成验证码 <a href="https://www.hutool.cn/docs/#/captcha/%E6%A6%82%E8%BF%B0">hutool captcha</a>
  */
-@Service("hutoolCaptchaProvider")
-public class HutoolCaptchaProvider implements ICaptcha {
+@Service("hutoolImageCaptcha")
+public class HutoolCaptchaServiceProvider extends AbstractCaptchaServiceBase implements ICaptchaService {
 
-	private final Logger log = getLogger(HutoolCaptchaProvider.class);
+	private final Logger log = getLogger(HutoolCaptchaServiceProvider.class);
 
 	/**
 	 * 默认使用圆环作为验证码干扰策略,分circle/line/shear/gif
@@ -53,7 +51,8 @@ public class HutoolCaptchaProvider implements ICaptcha {
 
 	private final ICaptchaPersistence captchaPersistence;
 
-	public HutoolCaptchaProvider(ICaptchaPersistence captchaPersistence) {
+	public HutoolCaptchaServiceProvider(ICaptchaPersistence captchaPersistence) {
+		super(captchaPersistence);
 		// 如果需要指定不同的干扰策略，只需要在应用启动的时间添加系统变量即可，参照以下代码:
 		/*
 		 * System.setProperty("captcha_strategy", "gif"); //gif图片
@@ -91,38 +90,19 @@ public class HutoolCaptchaProvider implements ICaptcha {
 		assert captchaParam instanceof HutoolCaptchaParam;
 		log.debug("request to create image captcha by hutool, captcha params is : [{}]", captchaParam);
 		HutoolCaptchaParam hutoolCaptchaParam = (HutoolCaptchaParam) captchaParam;
-		AbstractCaptcha captcha;
-		if (captchaStrategy.equals(DEFAULT_CAPTCHA_STRATEGY)) {
-			captcha = CaptchaUtil.createCircleCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getCircleCount());
-		}else if (captchaStrategy.equals(CAPTCHA_STRATEGY_LINE)){
-			captcha = CaptchaUtil.createLineCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getCircleCount());
-		}else if (captchaStrategy.equals(CAPTCHA_STRATEGY_SHEAR)){
-			captcha = CaptchaUtil.createShearCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getThickness());
-		}else {
-			captcha = CaptchaUtil.createGifCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount());
-		}
+		AbstractCaptcha captcha = switch (captchaStrategy) {
+			case DEFAULT_CAPTCHA_STRATEGY ->
+					CaptchaUtil.createCircleCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getCircleCount());
+			case CAPTCHA_STRATEGY_LINE ->
+					CaptchaUtil.createLineCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getCircleCount());
+			case CAPTCHA_STRATEGY_SHEAR ->
+					CaptchaUtil.createShearCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getThickness());
+			default ->
+					CaptchaUtil.createGifCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount());
+		};
 		String code = captcha.getCode();
 		String key = UUID.randomUUID().toString().replaceAll("-", "");
 		captchaPersistence.save(key, code, hutoolCaptchaParam.getTimeout(), hutoolCaptchaParam.getTimeunit());
 		return new ImageCaptchaInfo(key, code, captcha.getImageBase64Data());
-	}
-
-	/**
-	 * 校验校验码
-	 *
-	 * @param code 用户输入的验证码内容
-	 * @param key 该验证码的key
-	 * @return 是否输入成功
-	 */
-	@Override
-	public Boolean verify(String code, String key) throws CaptchaExpireException {
-		assert StringUtils.isNotBlank(code) && StringUtils.isNotBlank(key);
-		log.debug("request to verify captcha, key :[{}], code: [{}]", key, code);
-		Optional<String> optional = captchaPersistence.getCode(key);
-		if (optional.isPresent()){
-			String realCode = optional.get();
-			return code.equals(realCode);
-		}
-		throw new CaptchaExpireException();
 	}
 }

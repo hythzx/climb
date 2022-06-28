@@ -4,7 +4,7 @@ package com.yjy.climb.utils;
 import java.util.UUID;
 
 import com.yjy.climb.IntegrationTest;
-import com.yjy.climb.captcha.ICaptcha;
+import com.yjy.climb.captcha.ICaptchaService;
 import com.yjy.climb.captcha.ICaptchaInfo;
 import com.yjy.climb.captcha.ImageCaptchaInfo;
 import com.yjy.climb.captcha.hutool.HutoolCaptchaParam;
@@ -22,14 +22,14 @@ public class CaptchaTests {
 	private final Logger log = getLogger(CaptchaTests.class);
 
 	@Autowired
-	private ICaptcha iCaptcha;
+	private ICaptchaService iCaptchaService;
 
 	ICaptchaInfo captchaInfo;
 
 
 	@BeforeEach
 	public void init(){
-		captchaInfo = iCaptcha.create(new HutoolCaptchaParam());
+		captchaInfo = iCaptchaService.create(new HutoolCaptchaParam());
 	}
 
 	@Test
@@ -41,9 +41,9 @@ public class CaptchaTests {
 
 	@Test
 	public void captchaVerify(){
-		Boolean verify = iCaptcha.verify(captchaInfo.getCode(), captchaInfo.getKey());
+		Boolean verify = iCaptchaService.verify(captchaInfo.getCode(), captchaInfo.getKey());
 		assert verify;
-		Boolean verify1 = iCaptcha.verify(UUID.randomUUID().toString(), captchaInfo.getKey());
+		Boolean verify1 = iCaptchaService.verify(UUID.randomUUID().toString(), captchaInfo.getKey());
 		assert !verify1;
 	}
 

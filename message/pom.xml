@@ -16,4 +16,26 @@
 		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 
+
+	<dependencies>
+		<dependency>
+			<groupId>com.yjy</groupId>
+			<artifactId>core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<version>4.6.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+	</dependencies>
+
 </project>
