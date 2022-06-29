@@ -1,4 +1,4 @@
-package com.yjy.climb.captcha.hutool;
+package com.yjy.climb.captcha.image;
 
 
 import java.io.Serial;
@@ -10,7 +10,7 @@ import lombok.ToString;
 
 @Builder
 @ToString
-public class HutoolCaptchaRequest implements ICaptchaRequest, Serializable {
+public class ImageCaptchaRequest implements ICaptchaRequest, Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -39,10 +39,10 @@ public class HutoolCaptchaRequest implements ICaptchaRequest, Serializable {
 	 */
 	int thickness = 4;
 
-	public HutoolCaptchaRequest() {
+	public ImageCaptchaRequest() {
 	}
 
-	public HutoolCaptchaRequest(int width, int height, int codeCount, int circleCount, int thickness) {
+	public ImageCaptchaRequest(int width, int height, int codeCount, int circleCount, int thickness) {
 		this.width = width;
 		this.height = height;
 		this.codeCount = codeCount;

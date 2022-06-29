@@ -5,9 +5,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
 
-@Builder
 public class CaptchaResponseBase implements ICaptchaResponse, Serializable {
 
 	@Serial

@@ -17,6 +17,8 @@ public class ApplicationProperties {
 	@Data
 	public static class AliSms {
 
+		private Boolean enabled = true;
+
 		private String regionId = "cn-hangzhou";
 
 		private String accessKey;

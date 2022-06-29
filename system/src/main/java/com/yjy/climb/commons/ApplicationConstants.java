@@ -2,6 +2,7 @@ package com.yjy.climb.commons;
 
 /**
  * 应用默认常量
+ * 该类来自 <a href="https://github.com/jhipster/generator-jhipster">JHipster</a>
  */
 public class ApplicationConstants {
 

@@ -33,7 +33,7 @@ public class CaptchaResource {
 
 
 	public CaptchaResource(
-			@Qualifier("hutoolImageCaptcha") ICaptchaService imageCaptchaService,
+			@Qualifier("imageCaptcha") ICaptchaService imageCaptchaService,
 			@Qualifier("smsCaptcha") ICaptchaService smsCaptchaService) {
 		this.imageCaptchaService = imageCaptchaService;
 		this.smsCaptchaService = smsCaptchaService;

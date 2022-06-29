@@ -7,10 +7,7 @@ import javax.transaction.NotSupportedException;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.RandomUtil;
 import com.yjy.climb.captcha.AbstractCaptchaServiceBase;
-import com.yjy.climb.captcha.ICaptchaResponse;
-import com.yjy.climb.captcha.ICaptchaRequest;
 import com.yjy.climb.captcha.ICaptchaPersistence;
-import com.yjy.climb.captcha.ICaptchaService;
 import com.yjy.climb.exception.ErrorConstants.Message.Sms;
 import com.yjy.climb.exception.captcha.CaptchaCreateException;
 import com.yjy.climb.message.IMessageResponse;
@@ -26,7 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * 发送短信验证码接口
  */
 @Service("smsCaptcha")
-public class SmsCaptchaService extends AbstractCaptchaServiceBase implements ICaptchaService {
+public class SmsCaptchaService extends AbstractCaptchaServiceBase<SmsCaptchaRequest, SmsCaptchaResponse>{
 
 	private final Logger log = getLogger(SmsCaptchaService.class);
 
@@ -46,21 +43,19 @@ public class SmsCaptchaService extends AbstractCaptchaServiceBase implements ICa
 	 * @return 验证码内容
 	 */
 	@Override
-	public ICaptchaResponse create() throws NotSupportedException {
+	public SmsCaptchaResponse create() throws NotSupportedException {
 		throw new NotSupportedException("短信验证码不支持无参数模式");
 	}
 
 	/**
 	 * 创建验证码
 	 *
-	 * @param captchaParam 验证码生成参数
+	 * @param smsCaptchaParam 验证码生成参数
 	 * @return 验证码内容
 	 */
 	@Override
-	public ICaptchaResponse create(ICaptchaRequest captchaParam) throws CaptchaCreateException {
-		assert captchaParam instanceof SmsCaptchaRequest;
-		log.debug("request to send sms message, request param is :[{}]", captchaParam);
-		SmsCaptchaRequest smsCaptchaParam = (SmsCaptchaRequest) captchaParam;
+	public SmsCaptchaResponse create(SmsCaptchaRequest smsCaptchaParam) throws CaptchaCreateException {
+		log.debug("request to send sms message, request param is :[{}]", smsCaptchaParam);
 		// 短信验证码采用6位数数字的形式
 		String code = String.valueOf(RandomUtil.randomInt(100000, 999999));
 		SmsMessageRequest messageSenderParam = SmsMessageRequest.builder()
@@ -79,7 +74,7 @@ public class SmsCaptchaService extends AbstractCaptchaServiceBase implements ICa
 					smsCaptchaParam.getTimeout(),
 					smsCaptchaParam.getTimeunit()
 			);
-			return SmsCaptchaResponse.builder().key(key).code(code).build();
+			return new SmsCaptchaResponse(code, key);
 		}else {
 			throw new CaptchaCreateException(Sms.sendError.getErrorMsg(), Sms.sendError.getErrorCode());
 		}

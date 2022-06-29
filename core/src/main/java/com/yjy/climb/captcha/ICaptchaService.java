@@ -8,21 +8,21 @@ import com.yjy.climb.exception.captcha.CaptchaExpireException;
 /**
  * 验证码接口
  */
-public interface ICaptchaService {
+public interface ICaptchaService<R extends ICaptchaRequest, S extends ICaptchaResponse> {
 
 
 	/**
 	 * 使用默认参数创建验证码
 	 * @return 验证码内容
 	 */
-	ICaptchaResponse create() throws NotSupportedException, CaptchaCreateException;
+	S create() throws NotSupportedException, CaptchaCreateException;
 
 	/**
 	 * 创建验证码
-	 * @param captchaParam 验证码生成参数
+	 * @param captchaRequest 验证码生成参数
 	 * @return 验证码内容
 	 */
-	ICaptchaResponse create(ICaptchaRequest captchaParam) throws CaptchaCreateException;
+	S create(R captchaRequest) throws CaptchaCreateException;
 
 	/**
 	 * 校验校验码

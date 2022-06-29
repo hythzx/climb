@@ -20,6 +20,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 
+/**
+ * Liquibase配置 该类来自 <a href="https://github.com/jhipster/generator-jhipster">JHipster</a>
+ */
 @Configuration
 public class LiquibaseConfiguration {
 

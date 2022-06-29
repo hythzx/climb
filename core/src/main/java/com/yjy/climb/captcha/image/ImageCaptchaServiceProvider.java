@@ -1,13 +1,10 @@
-package com.yjy.climb.captcha.hutool;
+package com.yjy.climb.captcha.image;
 
 import java.util.UUID;
 
 import cn.hutool.captcha.AbstractCaptcha;
 import cn.hutool.captcha.CaptchaUtil;
 import com.yjy.climb.captcha.AbstractCaptchaServiceBase;
-import com.yjy.climb.captcha.ICaptchaResponse;
-import com.yjy.climb.captcha.ICaptchaService;
-import com.yjy.climb.captcha.ICaptchaRequest;
 import com.yjy.climb.captcha.ICaptchaPersistence;
 import org.slf4j.Logger;
 
@@ -18,10 +15,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * 使用hutool的验证码生成工具生成验证码 <a href="https://www.hutool.cn/docs/#/captcha/%E6%A6%82%E8%BF%B0">hutool captcha</a>
  */
-@Service("hutoolImageCaptcha")
-public class HutoolCaptchaServiceProvider extends AbstractCaptchaServiceBase implements ICaptchaService {
+@Service("imageCaptcha")
+public class ImageCaptchaServiceProvider extends AbstractCaptchaServiceBase<ImageCaptchaRequest, ImageCaptchaResponse> {
 
-	private final Logger log = getLogger(HutoolCaptchaServiceProvider.class);
+	private final Logger log = getLogger(ImageCaptchaServiceProvider.class);
 
 	/**
 	 * 默认使用圆环作为验证码干扰策略,分circle/line/shear/gif
@@ -50,7 +47,7 @@ public class HutoolCaptchaServiceProvider extends AbstractCaptchaServiceBase imp
 
 	private final ICaptchaPersistence captchaPersistence;
 
-	public HutoolCaptchaServiceProvider(ICaptchaPersistence captchaPersistence) {
+	public ImageCaptchaServiceProvider(ICaptchaPersistence captchaPersistence) {
 		super(captchaPersistence);
 		// 如果需要指定不同的干扰策略，只需要在应用启动的时间添加系统变量即可，参照以下代码:
 		/*
@@ -73,35 +70,32 @@ public class HutoolCaptchaServiceProvider extends AbstractCaptchaServiceBase imp
 	 * @return 验证码内容
 	 */
 	@Override
-	public ICaptchaResponse create() {
-		ICaptchaRequest imageCaptchaInfo = new HutoolCaptchaRequest();
-		return create(imageCaptchaInfo);
+	public ImageCaptchaResponse create() {
+		return create(new ImageCaptchaRequest());
 	}
 
 	/**
 	 * 创建验证码
 	 *
-	 * @param captchaParam 验证码生成参数
+	 * @param imageCaptchaRequest 验证码生成参数
 	 * @return 验证码内容
 	 */
 	@Override
-	public ICaptchaResponse create(ICaptchaRequest captchaParam) {
-		assert captchaParam instanceof HutoolCaptchaRequest;
-		log.debug("request to create image captcha by hutool, captcha params is : [{}]", captchaParam);
-		HutoolCaptchaRequest hutoolCaptchaParam = (HutoolCaptchaRequest) captchaParam;
+	public ImageCaptchaResponse create(ImageCaptchaRequest imageCaptchaRequest) {
+		log.debug("request to create image captcha by hutool, captcha params is : [{}]", imageCaptchaRequest);
 		AbstractCaptcha captcha = switch (captchaStrategy) {
 			case DEFAULT_CAPTCHA_STRATEGY ->
-					CaptchaUtil.createCircleCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getCircleCount());
+					CaptchaUtil.createCircleCaptcha(imageCaptchaRequest.getWidth(), imageCaptchaRequest.getHeight(), imageCaptchaRequest.getCodeCount(), imageCaptchaRequest.getCircleCount());
 			case CAPTCHA_STRATEGY_LINE ->
-					CaptchaUtil.createLineCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getCircleCount());
+					CaptchaUtil.createLineCaptcha(imageCaptchaRequest.getWidth(), imageCaptchaRequest.getHeight(), imageCaptchaRequest.getCodeCount(), imageCaptchaRequest.getCircleCount());
 			case CAPTCHA_STRATEGY_SHEAR ->
-					CaptchaUtil.createShearCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getThickness());
+					CaptchaUtil.createShearCaptcha(imageCaptchaRequest.getWidth(), imageCaptchaRequest.getHeight(), imageCaptchaRequest.getCodeCount(), imageCaptchaRequest.getThickness());
 			default ->
-					CaptchaUtil.createGifCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount());
+					CaptchaUtil.createGifCaptcha(imageCaptchaRequest.getWidth(), imageCaptchaRequest.getHeight(), imageCaptchaRequest.getCodeCount());
 		};
 		String code = captcha.getCode();
 		String key = UUID.randomUUID().toString().replaceAll("-", "");
-		captchaPersistence.save(key, code, hutoolCaptchaParam.getTimeout(), hutoolCaptchaParam.getTimeunit());
+		captchaPersistence.save(key, code, imageCaptchaRequest.getTimeout(), imageCaptchaRequest.getTimeunit());
 		return new ImageCaptchaResponse(key, code, captcha.getImageBase64Data());
 	}
 }

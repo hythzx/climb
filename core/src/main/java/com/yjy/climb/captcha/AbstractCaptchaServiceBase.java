@@ -18,7 +18,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * 验证码抽象类，实现简单的验证码校验
  */
-public abstract class AbstractCaptchaServiceBase implements ICaptchaService, Serializable {
+public abstract class AbstractCaptchaServiceBase<R extends ICaptchaRequest, S extends ICaptchaResponse> implements ICaptchaService<R, S>, Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;

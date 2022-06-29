@@ -1,4 +1,4 @@
-package com.yjy.climb.captcha.hutool;
+package com.yjy.climb.captcha.image;
 
 
 import java.io.Serial;

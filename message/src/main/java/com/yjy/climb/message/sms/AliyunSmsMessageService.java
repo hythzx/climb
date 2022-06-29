@@ -22,7 +22,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * 调用阿里云短信接口发送短信，代码参照 <a href="https://help.aliyun.com/document_detail/419273.htm?spm=a2c4g.11186623.0.0.34372807qpUbb7">SendSms - 发送短信</a> 编写
  */
-@Service("aliyunSmsMessageService")
+@Service
 public class AliyunSmsMessageService implements ISmsMessageService {
 
 	private final Logger log = getLogger(AliyunSmsMessageService.class);

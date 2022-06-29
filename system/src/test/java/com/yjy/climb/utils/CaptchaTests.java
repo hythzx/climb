@@ -6,8 +6,8 @@ import java.util.UUID;
 import com.yjy.climb.IntegrationTest;
 import com.yjy.climb.captcha.ICaptchaResponse;
 import com.yjy.climb.captcha.ICaptchaService;
-import com.yjy.climb.captcha.hutool.ImageCaptchaResponse;
-import com.yjy.climb.captcha.hutool.HutoolCaptchaRequest;
+import com.yjy.climb.captcha.image.ImageCaptchaResponse;
+import com.yjy.climb.captcha.image.ImageCaptchaRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class CaptchaTests {
 
 	@BeforeEach
 	public void init(){
-		captchaInfo = iCaptchaService.create(new HutoolCaptchaRequest());
+		captchaInfo = iCaptchaService.create(new ImageCaptchaRequest());
 	}
 
 	@Test

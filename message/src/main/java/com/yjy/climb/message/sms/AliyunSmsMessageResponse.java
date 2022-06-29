@@ -1,12 +1,17 @@
 package com.yjy.climb.message.sms;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import com.yjy.climb.message.AbstractMessageResponse;
 
+/**
+ * 阿里云短信的返回类
+ */
 public class AliyunSmsMessageResponse extends AbstractMessageResponse implements Serializable {
 
-
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private String bizId;
 

@@ -5,5 +5,5 @@
 2. `ICaptchaResponse`: 生成的验证码信息
 3. `ICaptchaRequest`: 用于生成验证码的参数
 4. `ICaptchaPersistence`: 验证码持久化接口，用于缓存验证码，默认使用Redis
-5. `hutool`: 使用hutool工具生成图形验证码
+5. `image`: 使用hutool工具生成图形验证码
 6. `sms`: 使用短信方式发送验证码
