@@ -53,7 +53,7 @@ public class RedisCaptchaPersistence implements ICaptchaPersistence{
 		assert StringUtils.isNotBlank(key);
 		log.debug("request to get captcha code, the key is [{}]", key);
 		String code = (String) redissonClient.getMapCache(CAPTCHA_CACHE_KEY).get(key);
-		log.debug("get captcha code ready,code is [{}], key is [{}]", code, key);
+		log.debug("get captcha code completed,code is [{}], key is [{}]", code, key);
 		return code != null ? Optional.of(code): Optional.empty();
 	}
 }

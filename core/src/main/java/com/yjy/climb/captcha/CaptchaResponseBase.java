@@ -1,21 +1,27 @@
 package com.yjy.climb.captcha;
 
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 
 @Builder
-public class CaptchaInfoBase implements ICaptchaInfo{
+public class CaptchaResponseBase implements ICaptchaResponse, Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
 	protected String code;
 
 	protected String key;
 
-	public CaptchaInfoBase() {
+	public CaptchaResponseBase() {
 	}
 
-	public CaptchaInfoBase(String code, String key) {
+	public CaptchaResponseBase(String code, String key) {
 		this.code = code;
 		this.key = key;
 	}

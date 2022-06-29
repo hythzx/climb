@@ -1,13 +1,19 @@
 package com.yjy.climb.captcha.hutool;
 
 
-import com.yjy.climb.captcha.ICaptchaParam;
+import java.io.Serial;
+import java.io.Serializable;
+
+import com.yjy.climb.captcha.ICaptchaRequest;
 import lombok.Builder;
 import lombok.ToString;
 
 @Builder
 @ToString
-public class HutoolCaptchaParam implements ICaptchaParam {
+public class HutoolCaptchaRequest implements ICaptchaRequest, Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 图片宽度
@@ -33,10 +39,10 @@ public class HutoolCaptchaParam implements ICaptchaParam {
 	 */
 	int thickness = 4;
 
-	public HutoolCaptchaParam() {
+	public HutoolCaptchaRequest() {
 	}
 
-	public HutoolCaptchaParam(int width, int height, int codeCount, int circleCount, int thickness) {
+	public HutoolCaptchaRequest(int width, int height, int codeCount, int circleCount, int thickness) {
 		this.width = width;
 		this.height = height;
 		this.codeCount = codeCount;

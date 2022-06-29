@@ -9,8 +9,8 @@
 验证码使用方式:
 
 ```java
+import com.yjy.climb.captcha.ICaptchaResponse;
 import com.yjy.climb.captcha.ICaptchaService;
-import com.yjy.climb.captcha.ICaptchaInfo;
 
 public class CaptchaTest {
 
@@ -20,7 +20,7 @@ public class CaptchaTest {
 		this.iCaptchaService = iCaptchaService;
 	}
 
-	public ICaptchaInfo create() {
+	public ICaptchaResponse create() {
 		return iCaptchaService.create();     // 使用默认参数
 	}
 }

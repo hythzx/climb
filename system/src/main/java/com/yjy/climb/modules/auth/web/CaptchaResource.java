@@ -2,9 +2,9 @@ package com.yjy.climb.modules.auth.web;
 
 import javax.transaction.NotSupportedException;
 
+import com.yjy.climb.captcha.ICaptchaResponse;
 import com.yjy.climb.captcha.ICaptchaService;
-import com.yjy.climb.captcha.ICaptchaInfo;
-import com.yjy.climb.captcha.sms.SmsCaptchaParam;
+import com.yjy.climb.captcha.sms.SmsCaptchaRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -28,6 +28,7 @@ public class CaptchaResource {
 
 	private final ICaptchaService smsCaptchaService;
 
+
 	public CaptchaResource(
 			@Qualifier("hutoolImageCaptcha") ICaptchaService imageCaptchaService,
 			@Qualifier("smsCaptcha") ICaptchaService smsCaptchaService) {
@@ -37,17 +38,17 @@ public class CaptchaResource {
 
 	@GetMapping("/image")
 	@Operation(summary = "获取图形验证码,该验证码使用base64字符串")
-	public ResponseEntity<ICaptchaInfo> getImageCaptcha() throws NotSupportedException {
-		ICaptchaInfo captchaInfo = imageCaptchaService.create();
+	public ResponseEntity<ICaptchaResponse> getImageCaptcha() throws NotSupportedException {
+		ICaptchaResponse captchaInfo = imageCaptchaService.create();
 		return ResponseEntity.ok(captchaInfo);
 	}
 
 	@GetMapping("/sms")
 	@Operation(summary = "获取短信验证码")
-	public ResponseEntity<ICaptchaInfo> getSmsCaptcha(String mobile){
-		SmsCaptchaParam smsCaptchaParam = SmsCaptchaParam.builder().mobile(mobile).build();
-		ICaptchaInfo iCaptchaInfo = smsCaptchaService.create(smsCaptchaParam);
-		return ResponseEntity.ok(iCaptchaInfo);
+	public ResponseEntity<ICaptchaResponse> getSmsCaptcha(String mobile){
+		SmsCaptchaRequest smsCaptchaParam = SmsCaptchaRequest.builder().mobile(mobile).build();
+		ICaptchaResponse iCaptchaResponse = smsCaptchaService.create(smsCaptchaParam);
+		return ResponseEntity.ok(iCaptchaResponse);
 	}
 
 	@GetMapping("/verify")

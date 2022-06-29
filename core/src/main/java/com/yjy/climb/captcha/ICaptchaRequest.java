@@ -3,9 +3,9 @@ package com.yjy.climb.captcha;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 生成验证码的参数，大多数情况并不需要额外的参数，但是涉及到图片验证码比如需要长度、干扰因子等需要额外的参数，短信验证码需要短信模版和参数名
+ * 生成验证码的参数，大多数情况并不需要额外的参数，但是涉及到图片验证码比如需要长度、干扰因子等，短信验证码需要短信模版编码和短信变量
  */
-public interface ICaptchaParam {
+public interface ICaptchaRequest {
 
 
 	/**

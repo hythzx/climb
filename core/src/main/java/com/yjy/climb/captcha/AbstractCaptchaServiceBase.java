@@ -1,5 +1,7 @@
 package com.yjy.climb.captcha;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Optional;
 
 import com.yjy.climb.exception.CaptchaExpireException;
@@ -11,7 +13,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * 验证码抽象类，实现简单的验证码校验
  */
-public abstract class AbstractCaptchaServiceBase implements ICaptchaService{
+public abstract class AbstractCaptchaServiceBase implements ICaptchaService, Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private final Logger log = getLogger(AbstractCaptchaServiceBase.class);
 

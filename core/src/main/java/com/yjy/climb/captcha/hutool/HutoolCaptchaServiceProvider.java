@@ -5,11 +5,10 @@ import java.util.UUID;
 import cn.hutool.captcha.AbstractCaptcha;
 import cn.hutool.captcha.CaptchaUtil;
 import com.yjy.climb.captcha.AbstractCaptchaServiceBase;
+import com.yjy.climb.captcha.ICaptchaResponse;
 import com.yjy.climb.captcha.ICaptchaService;
-import com.yjy.climb.captcha.ICaptchaInfo;
-import com.yjy.climb.captcha.ICaptchaParam;
+import com.yjy.climb.captcha.ICaptchaRequest;
 import com.yjy.climb.captcha.ICaptchaPersistence;
-import com.yjy.climb.captcha.ImageCaptchaInfo;
 import org.slf4j.Logger;
 
 import org.springframework.stereotype.Service;
@@ -74,8 +73,8 @@ public class HutoolCaptchaServiceProvider extends AbstractCaptchaServiceBase imp
 	 * @return 验证码内容
 	 */
 	@Override
-	public ICaptchaInfo create() {
-		ICaptchaParam imageCaptchaInfo = new HutoolCaptchaParam();
+	public ICaptchaResponse create() {
+		ICaptchaRequest imageCaptchaInfo = new HutoolCaptchaRequest();
 		return create(imageCaptchaInfo);
 	}
 
@@ -86,10 +85,10 @@ public class HutoolCaptchaServiceProvider extends AbstractCaptchaServiceBase imp
 	 * @return 验证码内容
 	 */
 	@Override
-	public ICaptchaInfo create(ICaptchaParam captchaParam) {
-		assert captchaParam instanceof HutoolCaptchaParam;
+	public ICaptchaResponse create(ICaptchaRequest captchaParam) {
+		assert captchaParam instanceof HutoolCaptchaRequest;
 		log.debug("request to create image captcha by hutool, captcha params is : [{}]", captchaParam);
-		HutoolCaptchaParam hutoolCaptchaParam = (HutoolCaptchaParam) captchaParam;
+		HutoolCaptchaRequest hutoolCaptchaParam = (HutoolCaptchaRequest) captchaParam;
 		AbstractCaptcha captcha = switch (captchaStrategy) {
 			case DEFAULT_CAPTCHA_STRATEGY ->
 					CaptchaUtil.createCircleCaptcha(hutoolCaptchaParam.getWidth(), hutoolCaptchaParam.getHeight(), hutoolCaptchaParam.getCodeCount(), hutoolCaptchaParam.getCircleCount());
@@ -103,6 +102,6 @@ public class HutoolCaptchaServiceProvider extends AbstractCaptchaServiceBase imp
 		String code = captcha.getCode();
 		String key = UUID.randomUUID().toString().replaceAll("-", "");
 		captchaPersistence.save(key, code, hutoolCaptchaParam.getTimeout(), hutoolCaptchaParam.getTimeunit());
-		return new ImageCaptchaInfo(key, code, captcha.getImageBase64Data());
+		return new ImageCaptchaResponse(key, code, captcha.getImageBase64Data());
 	}
 }

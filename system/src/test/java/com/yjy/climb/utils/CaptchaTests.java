@@ -4,10 +4,10 @@ package com.yjy.climb.utils;
 import java.util.UUID;
 
 import com.yjy.climb.IntegrationTest;
+import com.yjy.climb.captcha.ICaptchaResponse;
 import com.yjy.climb.captcha.ICaptchaService;
-import com.yjy.climb.captcha.ICaptchaInfo;
-import com.yjy.climb.captcha.ImageCaptchaInfo;
-import com.yjy.climb.captcha.hutool.HutoolCaptchaParam;
+import com.yjy.climb.captcha.hutool.ImageCaptchaResponse;
+import com.yjy.climb.captcha.hutool.HutoolCaptchaRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -24,18 +24,18 @@ public class CaptchaTests {
 	@Autowired
 	private ICaptchaService iCaptchaService;
 
-	ICaptchaInfo captchaInfo;
+	ICaptchaResponse captchaInfo;
 
 
 	@BeforeEach
 	public void init(){
-		captchaInfo = iCaptchaService.create(new HutoolCaptchaParam());
+		captchaInfo = iCaptchaService.create(new HutoolCaptchaRequest());
 	}
 
 	@Test
 	public void testCaptchaCreate(){
-		assert captchaInfo instanceof ImageCaptchaInfo;
-		ImageCaptchaInfo imageCaptchaInfo = (ImageCaptchaInfo) captchaInfo;
+		assert captchaInfo instanceof ImageCaptchaResponse;
+		ImageCaptchaResponse imageCaptchaInfo = (ImageCaptchaResponse) captchaInfo;
 		log.info("key: [{}], code: [{}], base64Image:[{}]", captchaInfo.getKey(), captchaInfo.getCode(), imageCaptchaInfo.getBase64Content());
 	}
 

@@ -3,7 +3,7 @@ package com.yjy.climb.captcha;
 /**
  * 验证码信息接口
  */
-public interface ICaptchaInfo {
+public interface ICaptchaResponse {
 
 	/**
 	 * 验证码内容

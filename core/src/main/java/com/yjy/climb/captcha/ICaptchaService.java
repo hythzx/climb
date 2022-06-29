@@ -14,14 +14,14 @@ public interface ICaptchaService {
 	 * 使用默认参数创建验证码
 	 * @return 验证码内容
 	 */
-	ICaptchaInfo create() throws NotSupportedException;
+	ICaptchaResponse create() throws NotSupportedException;
 
 	/**
 	 * 创建验证码
 	 * @param captchaParam 验证码生成参数
 	 * @return 验证码内容
 	 */
-	ICaptchaInfo create(ICaptchaParam captchaParam);
+	ICaptchaResponse create(ICaptchaRequest captchaParam);
 
 	/**
 	 * 校验校验码
