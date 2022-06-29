@@ -12,11 +12,11 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import com.yjy.climb.exception.BadRequestAlertException;
-import com.yjy.climb.exception.CaptchaExpireException;
-import com.yjy.climb.exception.EmailAlreadyUsedException;
+import com.yjy.climb.exception.captcha.CaptchaExpireException;
+import com.yjy.climb.exception.management.EmailAlreadyUsedException;
 import com.yjy.climb.exception.ErrorConstants;
 import com.yjy.climb.exception.FieldErrorVM;
-import com.yjy.climb.exception.InvalidPasswordException;
+import com.yjy.climb.exception.auth.InvalidPasswordException;
 import org.apache.commons.lang3.StringUtils;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
@@ -81,7 +81,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         String requestUri = nativeRequest != null ? nativeRequest.getRequestURI() : StringUtils.EMPTY;
         ProblemBuilder builder = Problem
             .builder()
-            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
             .withStatus(problem.getStatus())
             .withTitle(problem.getTitle())
             .with(PATH_KEY, requestUri);
@@ -115,16 +114,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 		Problem problem = Problem
 				.builder()
 				.withTitle(ERR_MSG)
-				.withStatus(defaultConstraintViolationStatus())
-				.build();
-		return create(ex, problem, request);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<Problem> handleCaptchaExpireException(CaptchaExpireException ex, NativeWebRequest request){
-		Problem problem = Problem
-				.builder()
-				.withTitle("验证码失效，请重新获取")
 				.withStatus(defaultConstraintViolationStatus())
 				.build();
 		return create(ex, problem, request);
@@ -180,11 +169,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
-        return create(
-            ex,
-            request,
-            HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage())
-        );
+		Problem problem = Problem
+				.builder()
+				.withTitle(ex.getTitle())
+				.withStatus(defaultConstraintViolationStatus())
+				.withDetail(String.format("error.%s.%s", ex.getEntityName(), ex.getErrorKey()))
+				.build();
+		return create(ex, problem, request);
     }
 
     @ExceptionHandler
@@ -201,7 +192,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             if (throwable instanceof HttpMessageConversionException) {
                 return Problem
                     .builder()
-                    .withType(type)
                     .withTitle(status.getReasonPhrase())
                     .withStatus(status)
                     .withDetail(ERR_MSG)
@@ -212,7 +202,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             if (throwable instanceof DataAccessException) {
                 return Problem
                     .builder()
-                    .withType(type)
                     .withTitle(status.getReasonPhrase())
                     .withStatus(status)
                     .withDetail("数据访问失败")
@@ -223,7 +212,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             if (containsPackageName(throwable.getMessage())) {
                 return Problem
                     .builder()
-                    .withType(type)
                     .withTitle(status.getReasonPhrase())
                     .withStatus(status)
                     .withDetail(ERR_MSG)
@@ -235,7 +223,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
         return Problem
             .builder()
-            .withType(type)
             .withTitle(status.getReasonPhrase())
             .withStatus(status)
             .withDetail(throwable.getMessage())

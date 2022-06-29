@@ -4,9 +4,14 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Optional;
 
-import com.yjy.climb.exception.CaptchaExpireException;
+import javax.validation.constraints.NotNull;
+
+import com.yjy.climb.exception.ErrorConstants.Captcha;
+import com.yjy.climb.exception.captcha.CaptchaExpireException;
+import com.yjy.climb.exception.captcha.CaptchaVerifyException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -34,8 +39,11 @@ public abstract class AbstractCaptchaServiceBase implements ICaptchaService, Ser
 	 * @return 是否输入成功
 	 */
 	@Override
-	public Boolean verify(String code, String key) throws CaptchaExpireException{
+	public Boolean verify(@NotNull String code, @NotNull String key) throws CaptchaExpireException{
 		assert StringUtils.isNotBlank(code) && StringUtils.isNotBlank(key);
+		if (StringUtils.isBlank(code) || StringUtils.isBlank(key)){
+			throw new CaptchaVerifyException(Captcha.verifyParamNull.getErrorMsg(), Captcha.verifyParamNull.getCode());
+		}
 		log.debug("request to verify captcha, key :[{}], code: [{}]", key, code);
 		Optional<String> optional = persistence.getCode(key);
 		if (optional.isPresent()){

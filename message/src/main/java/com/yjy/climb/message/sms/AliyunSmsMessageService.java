@@ -9,7 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yjy.climb.config.ApplicationProperties;
 import com.yjy.climb.config.ApplicationProperties.AliSms;
 import com.yjy.climb.config.ApplicationProperties.AliSms.Template;
-import com.yjy.climb.exception.SmsSendException;
+import com.yjy.climb.exception.ErrorConstants.Message.Sms;
+import com.yjy.climb.exception.message.SmsSendException;
 import com.yjy.climb.message.IMessageResponse;
 import org.slf4j.Logger;
 
@@ -49,12 +50,12 @@ public class AliyunSmsMessageService implements ISmsMessageService {
 		if (smsMessageRequest.getCode() != null){
 			Template template = aliSms.getTemplates().get(smsMessageRequest.getCode());
 			if (template == null) {
-				throw new SmsSendException("短信模版编号不存在", SmsSendException.CODE_ERROR);
+				throw new SmsSendException(Sms.codeError.getErrorMsg(), Sms.codeError.getErrorCode());
 			}
 			templateCode = template.getCode();
 		}else {
 			if (smsMessageRequest.getTemplateCode() == null) {
-				throw new SmsSendException("缺少短信模板参数", SmsSendException.NO_TEMPLATE_CODE);
+				throw new SmsSendException(Sms.noTemplateCode.getErrorMsg(), Sms.noTemplateCode.getErrorCode());
 			}
 			templateCode = smsMessageRequest.getTemplateCode();
 		}

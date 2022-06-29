@@ -1,6 +1,7 @@
 package com.yjy.climb.modules.auth.web;
 
 import javax.transaction.NotSupportedException;
+import javax.validation.constraints.NotNull;
 
 import com.yjy.climb.captcha.ICaptchaResponse;
 import com.yjy.climb.captcha.ICaptchaService;
@@ -11,8 +12,10 @@ import org.slf4j.Logger;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -45,7 +48,7 @@ public class CaptchaResource {
 
 	@GetMapping("/sms")
 	@Operation(summary = "获取短信验证码")
-	public ResponseEntity<ICaptchaResponse> getSmsCaptcha(String mobile){
+	public ResponseEntity<ICaptchaResponse> getSmsCaptcha(@RequestParam String mobile){
 		SmsCaptchaRequest smsCaptchaParam = SmsCaptchaRequest.builder().mobile(mobile).build();
 		ICaptchaResponse iCaptchaResponse = smsCaptchaService.create(smsCaptchaParam);
 		return ResponseEntity.ok(iCaptchaResponse);
@@ -53,7 +56,7 @@ public class CaptchaResource {
 
 	@GetMapping("/verify")
 	@Operation(summary = "验证用户输入的验证码是否正确，仅作为测试使用")
-	public ResponseEntity<Boolean> verifyCaptcha(String key, String code){
+	public ResponseEntity<Boolean> verifyCaptcha(@Validated @NotNull(message = "key必填") String key,@RequestParam String code){
 		return ResponseEntity.ok(imageCaptchaService.verify(code, key));
 	}
 }

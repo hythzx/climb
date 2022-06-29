@@ -51,14 +51,6 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-		return web -> web.ignoring()
-				.antMatchers(HttpMethod.OPTIONS, "/**")
-				.antMatchers("/swagger-ui/**")
-				.antMatchers("/druid/**");
-	}
-
-	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.csrf()
@@ -82,6 +74,8 @@ public class SecurityConfiguration {
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 					.authorizeRequests()
+					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+					.antMatchers("/swagger-ui/**").permitAll()
 					.antMatchers("/druid/**").permitAll()
 					.antMatchers("/public/**").permitAll()
 				    .antMatchers("/api/captcha/**").permitAll()

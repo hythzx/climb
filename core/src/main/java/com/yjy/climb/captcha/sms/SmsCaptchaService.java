@@ -11,6 +11,8 @@ import com.yjy.climb.captcha.ICaptchaResponse;
 import com.yjy.climb.captcha.ICaptchaRequest;
 import com.yjy.climb.captcha.ICaptchaPersistence;
 import com.yjy.climb.captcha.ICaptchaService;
+import com.yjy.climb.exception.ErrorConstants.Message.Sms;
+import com.yjy.climb.exception.captcha.CaptchaCreateException;
 import com.yjy.climb.message.IMessageResponse;
 import com.yjy.climb.message.sms.ISmsMessageService;
 import com.yjy.climb.message.sms.SmsMessageRequest;
@@ -55,7 +57,7 @@ public class SmsCaptchaService extends AbstractCaptchaServiceBase implements ICa
 	 * @return 验证码内容
 	 */
 	@Override
-	public ICaptchaResponse create(ICaptchaRequest captchaParam) {
+	public ICaptchaResponse create(ICaptchaRequest captchaParam) throws CaptchaCreateException {
 		assert captchaParam instanceof SmsCaptchaRequest;
 		log.debug("request to send sms message, request param is :[{}]", captchaParam);
 		SmsCaptchaRequest smsCaptchaParam = (SmsCaptchaRequest) captchaParam;
@@ -67,15 +69,19 @@ public class SmsCaptchaService extends AbstractCaptchaServiceBase implements ICa
 				.params(new HashMap<>() {{
 					put("code", code);
 				}}).build();
-		SmsCaptchaResponse messageResponse = (SmsCaptchaResponse) iSmsMessageService.sendMessage(messageSenderParam);
-		// 使用 "手机号-业务编码"的base64编码 作为缓存的key
-		String key = Base64.encode(String.format("%s-%s", smsCaptchaParam.getMobile(), SmsCaptchaRequest.code));
-		iCaptchaPersistence.save(
-				key,
-				code,
-				smsCaptchaParam.getTimeout(),
-				smsCaptchaParam.getTimeunit()
-		);
-		return SmsCaptchaResponse.builder().key(key).code(code).build();
+		IMessageResponse messageResponse =  iSmsMessageService.sendMessage(messageSenderParam);
+		if (messageResponse.getSuccess()) {
+			// 使用 "手机号-业务编码"的base64编码 作为缓存的key
+			String key = Base64.encode(String.format("%s-%s", smsCaptchaParam.getMobile(), SmsCaptchaRequest.code));
+			iCaptchaPersistence.save(
+					key,
+					code,
+					smsCaptchaParam.getTimeout(),
+					smsCaptchaParam.getTimeunit()
+			);
+			return SmsCaptchaResponse.builder().key(key).code(code).build();
+		}else {
+			throw new CaptchaCreateException(Sms.sendError.getErrorMsg(), Sms.sendError.getErrorCode());
+		}
 	}
 }

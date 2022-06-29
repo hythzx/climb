@@ -2,7 +2,8 @@ package com.yjy.climb.captcha;
 
 import javax.transaction.NotSupportedException;
 
-import com.yjy.climb.exception.CaptchaExpireException;
+import com.yjy.climb.exception.captcha.CaptchaCreateException;
+import com.yjy.climb.exception.captcha.CaptchaExpireException;
 
 /**
  * 验证码接口
@@ -14,14 +15,14 @@ public interface ICaptchaService {
 	 * 使用默认参数创建验证码
 	 * @return 验证码内容
 	 */
-	ICaptchaResponse create() throws NotSupportedException;
+	ICaptchaResponse create() throws NotSupportedException, CaptchaCreateException;
 
 	/**
 	 * 创建验证码
 	 * @param captchaParam 验证码生成参数
 	 * @return 验证码内容
 	 */
-	ICaptchaResponse create(ICaptchaRequest captchaParam);
+	ICaptchaResponse create(ICaptchaRequest captchaParam) throws CaptchaCreateException;
 
 	/**
 	 * 校验校验码
