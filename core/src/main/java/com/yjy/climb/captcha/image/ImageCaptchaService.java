@@ -15,10 +15,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * 使用hutool的验证码生成工具生成验证码 <a href="https://www.hutool.cn/docs/#/captcha/%E6%A6%82%E8%BF%B0">hutool captcha</a>
  */
-@Service("imageCaptcha")
-public class ImageCaptchaServiceProvider extends AbstractCaptchaServiceBase<ImageCaptchaRequest, ImageCaptchaResponse> {
+@Service
+public class ImageCaptchaService extends AbstractCaptchaServiceBase<ImageCaptchaRequest, ImageCaptchaResponse> implements IImageCaptchaService {
 
-	private final Logger log = getLogger(ImageCaptchaServiceProvider.class);
+	private final Logger log = getLogger(ImageCaptchaService.class);
 
 	/**
 	 * 默认使用圆环作为验证码干扰策略,分circle/line/shear/gif
@@ -47,7 +47,7 @@ public class ImageCaptchaServiceProvider extends AbstractCaptchaServiceBase<Imag
 
 	private final ICaptchaPersistence captchaPersistence;
 
-	public ImageCaptchaServiceProvider(ICaptchaPersistence captchaPersistence) {
+	public ImageCaptchaService(ICaptchaPersistence captchaPersistence) {
 		super(captchaPersistence);
 		// 如果需要指定不同的干扰策略，只需要在应用启动的时间添加系统变量即可，参照以下代码:
 		/*

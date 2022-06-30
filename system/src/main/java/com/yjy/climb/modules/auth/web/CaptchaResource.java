@@ -4,13 +4,13 @@ import javax.transaction.NotSupportedException;
 import javax.validation.constraints.NotNull;
 
 import com.yjy.climb.captcha.ICaptchaResponse;
-import com.yjy.climb.captcha.ICaptchaService;
+import com.yjy.climb.captcha.image.IImageCaptchaService;
+import com.yjy.climb.captcha.sms.ISmsCaptchaService;
 import com.yjy.climb.captcha.sms.SmsCaptchaRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +27,12 @@ public class CaptchaResource {
 
 	private final Logger log = getLogger(CaptchaResource.class);
 
-	private final ICaptchaService imageCaptchaService;
+	private final IImageCaptchaService imageCaptchaService;
 
-	private final ICaptchaService smsCaptchaService;
+	private final ISmsCaptchaService smsCaptchaService;
 
 
-	public CaptchaResource(
-			@Qualifier("imageCaptcha") ICaptchaService imageCaptchaService,
-			@Qualifier("smsCaptcha") ICaptchaService smsCaptchaService) {
+	public CaptchaResource(IImageCaptchaService imageCaptchaService, ISmsCaptchaService smsCaptchaService) {
 		this.imageCaptchaService = imageCaptchaService;
 		this.smsCaptchaService = smsCaptchaService;
 	}
@@ -49,7 +47,7 @@ public class CaptchaResource {
 	@GetMapping("/sms")
 	@Operation(summary = "获取短信验证码")
 	public ResponseEntity<ICaptchaResponse> getSmsCaptcha(@RequestParam String mobile){
-		SmsCaptchaRequest smsCaptchaParam = SmsCaptchaRequest.builder().mobile(mobile).build();
+		SmsCaptchaRequest smsCaptchaParam = SmsCaptchaRequest.builder().mobile(mobile).businessKey(SmsCaptchaRequest.code).build();
 		ICaptchaResponse iCaptchaResponse = smsCaptchaService.create(smsCaptchaParam);
 		return ResponseEntity.ok(iCaptchaResponse);
 	}

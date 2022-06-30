@@ -24,4 +24,9 @@ public class SmsCaptchaRequest implements ICaptchaRequest, Serializable {
 
 	private String mobile;
 
+	/**
+	 * 业务编码，如登录、注册、找回密码、实名认证，不同业务类型的验证码无法混用
+	 */
+	private String businessKey;
+
 }

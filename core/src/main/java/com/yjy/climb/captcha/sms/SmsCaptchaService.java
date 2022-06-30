@@ -22,8 +22,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * 发送短信验证码接口
  */
-@Service("smsCaptcha")
-public class SmsCaptchaService extends AbstractCaptchaServiceBase<SmsCaptchaRequest, SmsCaptchaResponse>{
+@Service
+public class SmsCaptchaService extends AbstractCaptchaServiceBase<SmsCaptchaRequest, SmsCaptchaResponse> implements ISmsCaptchaService{
 
 	private final Logger log = getLogger(SmsCaptchaService.class);
 
@@ -50,16 +50,16 @@ public class SmsCaptchaService extends AbstractCaptchaServiceBase<SmsCaptchaRequ
 	/**
 	 * 创建验证码
 	 *
-	 * @param smsCaptchaParam 验证码生成参数
+	 * @param smsCaptchaRequest 验证码生成参数
 	 * @return 验证码内容
 	 */
 	@Override
-	public SmsCaptchaResponse create(SmsCaptchaRequest smsCaptchaParam) throws CaptchaCreateException {
-		log.debug("request to send sms message, request param is :[{}]", smsCaptchaParam);
+	public SmsCaptchaResponse create(SmsCaptchaRequest smsCaptchaRequest) throws CaptchaCreateException {
+		log.debug("request to send sms message, request param is :[{}]", smsCaptchaRequest);
 		// 短信验证码采用6位数数字的形式
 		String code = String.valueOf(RandomUtil.randomInt(100000, 999999));
 		SmsMessageRequest messageSenderParam = SmsMessageRequest.builder()
-				.mobile(smsCaptchaParam.getMobile())
+				.mobile(smsCaptchaRequest.getMobile())
 				.code(SmsCaptchaRequest.code)
 				.params(new HashMap<>() {{
 					put("code", code);
@@ -67,12 +67,12 @@ public class SmsCaptchaService extends AbstractCaptchaServiceBase<SmsCaptchaRequ
 		IMessageResponse messageResponse =  iSmsMessageService.sendMessage(messageSenderParam);
 		if (messageResponse.getSuccess()) {
 			// 使用 "手机号-业务编码"的base64编码 作为缓存的key
-			String key = Base64.encode(String.format("%s-%s", smsCaptchaParam.getMobile(), SmsCaptchaRequest.code));
+			String key = Base64.encode(String.format("%s-%s", smsCaptchaRequest.getMobile(), smsCaptchaRequest.getBusinessKey()));
 			iCaptchaPersistence.save(
 					key,
 					code,
-					smsCaptchaParam.getTimeout(),
-					smsCaptchaParam.getTimeunit()
+					smsCaptchaRequest.getTimeout(),
+					smsCaptchaRequest.getTimeunit()
 			);
 			return new SmsCaptchaResponse(code, key);
 		}else {
