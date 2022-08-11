@@ -89,7 +89,8 @@ public class CacheConfiguration {
     public JCacheManagerCustomizer cacheManagerCustomizer(javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration) {
         return cm -> {
 			  createCache(cm, "api", jcacheConfiguration);
-//            createCache(cm, com.yjy.climb.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
+              createCache(cm, "com.yjy.climb.modules.auth.domain.SysUser", jcacheConfiguration);
+			createCache(cm, "com.yjy.climb.modules.auth.domain.SysAuthority", jcacheConfiguration);
 //            createCache(cm, com.yjy.climb.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
 //            createCache(cm, com.yjy.climb.domain.User.class.getName(), jcacheConfiguration);
 //            createCache(cm, com.yjy.climb.domain.Authority.class.getName(), jcacheConfiguration);

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SwaggerConfiguration {
+public class OpenAPIConfiguration {
 
 	/**
 	 * 自定义 OpenAPI，控制swagger界面可以输入访问令牌并在全局生效

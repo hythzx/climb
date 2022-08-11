@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import com.yjy.climb.exception.BadRequestAlertException;
-import com.yjy.climb.exception.captcha.CaptchaExpireException;
 import com.yjy.climb.exception.management.EmailAlreadyUsedException;
 import com.yjy.climb.exception.ErrorConstants;
 import com.yjy.climb.exception.FieldErrorVM;
@@ -37,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -104,6 +104,23 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 		Problem problem = Problem
 				.builder()
 				.withTitle(ERR_MSG)
+				.withStatus(defaultConstraintViolationStatus())
+				.build();
+		return create(ex, problem, request);
+	}
+
+	/**
+	 * Spring MVC缺少参数返回的错误
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler
+	@Override
+	public ResponseEntity<Problem> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, NativeWebRequest request){
+		Problem problem = Problem
+				.builder()
+				.withTitle("参数校验失败")
 				.withStatus(defaultConstraintViolationStatus())
 				.build();
 		return create(ex, problem, request);

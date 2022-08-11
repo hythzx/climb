@@ -3,18 +3,15 @@ spring:
     name: climb
 
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:mem:climb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    name:
-    username:
-    password:
-    hikari:
-      auto-commit: false
+    url: jdbc:mysql://192.168.8.136:3306/climb?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: climb
+    password: climb123!
   jackson:
     serialization:
       write-durations-as-timestamps: false
   jpa:
-    database-platform: tech.jhipster.domain.util.FixedH2Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
     open-in-view: false
     hibernate:
       ddl-auto: none
