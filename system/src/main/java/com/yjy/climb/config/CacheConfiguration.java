@@ -7,6 +7,7 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.CreatedExpiryPolicy;
 import javax.cache.expiry.Duration;
 
+import com.yjy.climb.modules.auth.domain.SysUser;
 import org.hibernate.cache.jcache.ConfigSettings;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -89,8 +90,16 @@ public class CacheConfiguration {
     public JCacheManagerCustomizer cacheManagerCustomizer(javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration) {
         return cm -> {
 			  createCache(cm, "api", jcacheConfiguration);
-              createCache(cm, "com.yjy.climb.modules.auth.domain.SysUser", jcacheConfiguration);
-			createCache(cm, "com.yjy.climb.modules.auth.domain.SysAuthority", jcacheConfiguration);
+              createCache(cm, com.yjy.climb.modules.auth.domain.SysUser.class.getName(), jcacheConfiguration);
+			  createCache(cm, com.yjy.climb.modules.auth.domain.SysUser.class.getName() + ".sysRoles", jcacheConfiguration);
+			  createCache(cm, com.yjy.climb.modules.auth.domain.SysAuthority.class.getName(), jcacheConfiguration);
+			  createCache(cm, com.yjy.climb.modules.auth.domain.SysRole.class.getName(), jcacheConfiguration);
+			createCache(cm, com.yjy.climb.modules.auth.domain.SysRole.class.getName() + ".sysAuthorities", jcacheConfiguration);
+			  createCache(cm, com.yjy.climb.modules.auth.domain.Tenant.class.getName(), jcacheConfiguration);
+			  createCache(cm, com.yjy.climb.modules.auth.domain.TenantDepartment.class.getName(), jcacheConfiguration);
+			  createCache(cm, com.yjy.climb.modules.auth.domain.TenantRole.class.getName(), jcacheConfiguration);
+			  createCache(cm, com.yjy.climb.modules.auth.domain.TenantUser.class.getName(), jcacheConfiguration);
+
 //            createCache(cm, com.yjy.climb.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
 //            createCache(cm, com.yjy.climb.domain.User.class.getName(), jcacheConfiguration);
 //            createCache(cm, com.yjy.climb.domain.Authority.class.getName(), jcacheConfiguration);

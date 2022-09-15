@@ -7,9 +7,562 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
 
-    <!--
-        JHipster core tables.
-        The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
-    -->
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-2">
+		<createTable tableName="revinfo">
+			<column autoIncrement="true" name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtstmp" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-3">
+		<createTable remarks="菜单权限表" tableName="sys_authority">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="scope" remarks="权限范围" type="VARCHAR(12)"/>
+			<column name="title" remarks="标题" type="VARCHAR(32)"/>
+			<column name="icon" remarks="图标" type="VARCHAR(24)"/>
+			<column name="parent_id" remarks="父级菜单" type="BIGINT"/>
+			<column name="menu_sort" remarks="菜单排序" type="INT"/>
+			<column name="url" remarks="链接地址" type="VARCHAR(256)"/>
+			<column name="blank_target" remarks="链接目标新窗口还是当前窗口" type="BIT(1)"/>
+			<column name="menu_type" remarks="菜单类型" type="VARCHAR(12)"/>
+			<column name="is_show" remarks="是否显示" type="BIT(1)"/>
+			<column name="permission" remarks="权限" type="VARCHAR(32)"/>
+			<column name="default_redirect" remarks="是否默认自动跳转" type="BIT(1)"/>
+			<column name="redirect_weight" remarks="默认跳转权重" type="INT"/>
+			<column name="enabled" remarks="是否可用" type="BIT(1)"/>
+			<column name="deleted" remarks="是否删除" type="BIT(1)"/>
+			<column name="created_by" remarks="创建者" type="VARCHAR(64)"/>
+			<column name="created_date" remarks="创建时间" type="datetime"/>
+			<column name="last_modified_by" remarks="最后更新者" type="VARCHAR(64)"/>
+			<column name="last_modified_date" remarks="最后更新时间" type="datetime"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-4">
+		<createTable tableName="sys_authority_aud">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="created_by" type="VARCHAR(50)"/>
+			<column name="created_date" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+			<column name="last_modified_by" type="VARCHAR(50)"/>
+			<column name="last_modified_date" type="datetime"/>
+			<column name="blank_target" type="BIT(1)"/>
+			<column name="default_redirect" type="BIT(1)"/>
+			<column name="enabled" type="BIT(1)"/>
+			<column name="icon" type="VARCHAR(24)"/>
+			<column name="is_show" type="BIT(1)"/>
+			<column name="menu_sort" type="INT"/>
+			<column name="menu_type" type="VARCHAR(255)"/>
+			<column name="parent_id" type="BIGINT"/>
+			<column name="permission" type="VARCHAR(255)"/>
+			<column name="redirect_weight" type="INT"/>
+			<column name="scope" type="VARCHAR(255)"/>
+			<column name="title" type="VARCHAR(255)"/>
+			<column name="url" type="VARCHAR(255)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-5">
+		<createTable remarks="系统角色表" tableName="sys_role">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="name" remarks="角色名称" type="VARCHAR(32)"/>
+			<column name="role_code" remarks="角色编码" type="VARCHAR(32)"/>
+			<column name="enabled" remarks="是否可用" type="BIT(1)"/>
+			<column name="deleted" remarks="是否删除" type="BIT(1)"/>
+			<column name="created_by" remarks="创建者" type="VARCHAR(64)"/>
+			<column name="created_date" remarks="创建时间" type="datetime"/>
+			<column name="last_modified_by" remarks="最后更新者" type="VARCHAR(64)"/>
+			<column name="last_modified_date" remarks="最后更新时间" type="datetime"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-6">
+		<createTable tableName="sys_role_aud">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="created_by" type="VARCHAR(255)"/>
+			<column name="created_date" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+			<column name="enabled" type="BIT(1)"/>
+			<column name="last_modified_by" type="VARCHAR(255)"/>
+			<column name="last_modified_date" type="datetime"/>
+			<column name="name" type="VARCHAR(255)"/>
+			<column name="role_code" type="VARCHAR(255)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-7">
+		<createTable remarks="系统角色权限表" tableName="sys_role_authority">
+			<column name="role_id" remarks="角色ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="authority_id" remarks="权限ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-7-2">
+		<createTable remarks="系统角色权限表" tableName="sys_role_authority_aud">
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="role_id" remarks="角色ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="authority_id" remarks="权限ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-8">
+		<createTable remarks="租户表" tableName="sys_tenant">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="name" remarks="租户名" type="VARCHAR(128)"/>
+			<column name="logo" remarks="租户头像" type="VARCHAR(256)"/>
+			<column name="contact" remarks="联系电话" type="VARCHAR(24)"/>
+			<column name="activated" remarks="是否激活" type="BIT(1)"/>
+			<column name="enabled" remarks="是否可用" type="BIT(1)"/>
+			<column name="address" remarks="联系地址" type="VARCHAR(128)"/>
+			<column name="email" remarks="联系邮箱" type="VARCHAR(128)"/>
+			<column name="register_date" remarks="注册时间" type="datetime"/>
+			<column name="register_user" remarks="注册用户" type="BIGINT"/>
+			<column name="user_limit" remarks="用户数限制" type="BIGINT"/>
+			<column name="expired_date" remarks="失效时间" type="date"/>
+			<column name="tenant_owner" remarks="租户拥有者" type="BIGINT"/>
+			<column name="created_by" remarks="创建者" type="VARCHAR(64)"/>
+			<column name="created_date" remarks="创建时间" type="datetime"/>
+			<column name="last_modified_by" remarks="最后更新者" type="VARCHAR(64)"/>
+			<column name="last_modified_date" remarks="最后更新时间" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-9">
+		<createTable tableName="sys_tenant_aud">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="created_by" type="VARCHAR(50)"/>
+			<column name="created_date" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+			<column name="last_modified_by" type="VARCHAR(50)"/>
+			<column name="last_modified_date" type="datetime"/>
+			<column name="activated" type="BIT(1)"/>
+			<column name="address" type="VARCHAR(128)"/>
+			<column name="contact" type="VARCHAR(24)"/>
+			<column name="email" type="VARCHAR(128)"/>
+			<column name="enabled" type="BIT(1)"/>
+			<column name="expired_date" type="date"/>
+			<column name="logo" type="VARCHAR(256)"/>
+			<column name="name" type="VARCHAR(128)"/>
+			<column name="register_date" type="datetime"/>
+			<column name="tenant_owner" type="BIGINT"/>
+			<column name="user_limit" type="BIGINT"/>
+			<column name="register_user" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-10">
+		<createTable remarks="用户表" tableName="sys_user">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="nick_name" remarks="昵称" type="VARCHAR(32)"/>
+			<column name="header_image" remarks="头像" type="VARCHAR(256)"/>
+			<column name="login" remarks="登录名" type="VARCHAR(32)"/>
+			<column name="password" remarks="密码" type="VARCHAR(256)"/>
+			<column name="mobile" remarks="手机号" type="VARCHAR(24)"/>
+			<column name="email" remarks="电子邮箱" type="VARCHAR(64)"/>
+			<column name="birthday" remarks="生日" type="date"/>
+			<column name="gender" remarks="性别" type="VARCHAR(6)"/>
+			<column name="activated" remarks="是否激活" type="BIT(1)"/>
+			<column name="enabled" remarks="是否可用" type="BIT(1)"/>
+			<column name="created_by" remarks="创建者" type="VARCHAR(64)"/>
+			<column name="created_date" remarks="创建时间" type="datetime"/>
+			<column name="last_modified_by" remarks="最后更新者" type="VARCHAR(64)"/>
+			<column name="last_modified_date" remarks="最后更新时间" type="datetime"/>
+			<column name="deleted" remarks="是否删除" type="BIT(1)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-11">
+		<createTable tableName="sys_user_aud">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="created_by" type="VARCHAR(50)"/>
+			<column name="created_date" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+			<column name="last_modified_by" type="VARCHAR(50)"/>
+			<column name="last_modified_date" type="datetime"/>
+			<column name="activated" type="BIT(1)"/>
+			<column name="birthday" type="date"/>
+			<column name="email" type="VARCHAR(255)"/>
+			<column name="enabled" type="BIT(1)"/>
+			<column name="gender" type="VARCHAR(6)"/>
+			<column name="header_image" type="VARCHAR(256)"/>
+			<column name="login" type="VARCHAR(32)"/>
+			<column name="mobile" type="VARCHAR(24)"/>
+			<column name="nick_name" type="VARCHAR(32)"/>
+			<column name="password" type="VARCHAR(256)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-12">
+		<createTable remarks="系统用户角色关联表" tableName="sys_user_role">
+			<column name="role_id" remarks="角色ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="user_id" remarks="用户ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-12-2">
+		<createTable remarks="系统用户角色关联表" tableName="sys_user_role_aud">
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="role_id" remarks="角色ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="user_id" remarks="用户ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-13">
+		<createTable remarks="租户组织架构表" tableName="tenant_department">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="parent_id" remarks="上级组织编号" type="BIGINT"/>
+			<column name="name" remarks="组织名称" type="VARCHAR(64)"/>
+			<column name="icon" remarks="图标" type="VARCHAR(32)"/>
+			<column name="created_by" remarks="创建者" type="VARCHAR(64)"/>
+			<column name="created_date" remarks="创建时间" type="datetime"/>
+			<column name="last_modified_by" remarks="最后更新者" type="VARCHAR(64)"/>
+			<column name="last_modified_date" remarks="最后更新时间" type="datetime"/>
+			<column name="tenant_id" remarks="租户ID" type="BIGINT"/>
+			<column name="deleted" remarks="是否删除" type="BIT(1)"/>
+			<column name="leader" remarks="部门负责人" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-14">
+		<createTable tableName="tenant_department_aud">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="created_by" type="VARCHAR(50)"/>
+			<column name="created_date" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+			<column name="last_modified_by" type="VARCHAR(50)"/>
+			<column name="last_modified_date" type="datetime"/>
+			<column name="icon" type="VARCHAR(32)"/>
+			<column name="name" type="VARCHAR(64)"/>
+			<column name="parent_id" type="BIGINT"/>
+			<column name="leader" type="BIGINT"/>
+			<column name="tenant_id" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-15">
+		<createTable remarks="租户角色表" tableName="tenant_role">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="name" remarks="角色名称" type="VARCHAR(32)"/>
+			<column name="created_by" remarks="创建者" type="VARCHAR(64)"/>
+			<column name="created_date" remarks="创建时间" type="datetime"/>
+			<column name="last_modified_by" remarks="最后更新者" type="VARCHAR(64)"/>
+			<column name="last_modified_date" remarks="最后更新时间" type="datetime"/>
+			<column name="tenant_id" remarks="租户ID" type="BIGINT"/>
+			<column name="deleted" remarks="是否删除" type="BIT(1)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-16">
+		<createTable tableName="tenant_role_aud">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="created_by" type="VARCHAR(50)"/>
+			<column name="created_date" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+			<column name="last_modified_by" type="VARCHAR(50)"/>
+			<column name="last_modified_date" type="datetime"/>
+			<column name="name" type="VARCHAR(32)"/>
+			<column name="tenant_id" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-17">
+		<createTable remarks="租户角色权限关联表" tableName="tenant_role_authority">
+			<column name="tenant_role_id" remarks="租户角色ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="authority_id" remarks="权限ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-18">
+		<createTable remarks="用户租户关联表" tableName="tenant_user">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="tenant_id" remarks="租户ID" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="user_id" remarks="用户ID" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tenant_role_id" remarks="租户角色ID" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="header_image" remarks="头像" type="VARCHAR(256)"/>
+			<column name="job" remarks="职务" type="VARCHAR(32)"/>
+			<column name="job_no" remarks="工号" type="VARCHAR(32)"/>
+			<column name="activated" remarks="是否激活" type="BIT(1)"/>
+			<column name="active_time" remarks="激活时间" type="datetime"/>
+			<column name="entry_date" remarks="入职时间" type="date"/>
+			<column name="enabled" remarks="是否可用" type="BIT(1)"/>
+			<column name="name" remarks="姓名" type="VARCHAR(32)"/>
+			<column name="birthday" remarks="生日" type="date"/>
+			<column name="mobile" remarks="电话" type="VARCHAR(24)"/>
+			<column name="email" remarks="电子邮箱" type="VARCHAR(64)"/>
+			<column name="expired_date" remarks="失效时间" type="date"/>
+			<column name="created_by" remarks="创建者" type="VARCHAR(64)"/>
+			<column name="created_date" remarks="创建时间" type="datetime"/>
+			<column name="last_modified_by" remarks="最后更新者" type="VARCHAR(64)"/>
+			<column name="last_modified_date" remarks="最后更新时间" type="datetime"/>
+			<column name="deleted" remarks="是否删除" type="BIT(1)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-19">
+		<createTable tableName="tenant_user_aud">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="rev" type="INT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="revtype" type="TINYINT(3)"/>
+			<column name="created_by" type="VARCHAR(50)"/>
+			<column name="created_date" type="datetime"/>
+			<column name="deleted" type="BIT(1)"/>
+			<column name="last_modified_by" type="VARCHAR(50)"/>
+			<column name="last_modified_date" type="datetime"/>
+			<column name="activated" type="BIT(1)"/>
+			<column name="birthday" type="date"/>
+			<column name="email" type="VARCHAR(64)"/>
+			<column name="enabled" type="BIT(1)"/>
+			<column name="entry_date" type="date"/>
+			<column name="expired_date" type="date"/>
+			<column name="header_image" type="VARCHAR(256)"/>
+			<column name="job" type="VARCHAR(32)"/>
+			<column name="job_no" type="VARCHAR(32)"/>
+			<column name="mobile" type="VARCHAR(24)"/>
+			<column name="name" type="VARCHAR(32)"/>
+			<column name="user_id" type="BIGINT"/>
+			<column name="tenant_id" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-20">
+		<createTable remarks="租户组织关联表" tableName="tenant_user_org">
+			<column name="tenant_user_id" remarks="租户用户ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="tenant_org_id" remarks="租户组织ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-21">
+		<createIndex indexName="FK5r2mo4bigycd9fe2pue2dtkeo" tableName="tenant_role_aud">
+			<column name="rev"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-22">
+		<createIndex indexName="FK5t3kq3gusyik8ql4o9cv34h88" tableName="sys_user_aud">
+			<column name="rev"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-23">
+		<createIndex indexName="FK5t9rfonowi0d2xucyuf7ywt5q" tableName="sys_tenant_aud">
+			<column name="rev"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-24">
+		<createIndex indexName="FK973hy275rjrqvddjivk7vd1jx" tableName="tenant_user_aud">
+			<column name="rev"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-25">
+		<createIndex indexName="FKg69yq10ge5bovl97pmm6y1utj" tableName="sys_authority_aud">
+			<column name="rev"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-26">
+		<createIndex indexName="FKgxrc62glspp8soj4ouegc1vcq" tableName="tenant_department">
+			<column name="leader"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-27">
+		<createIndex indexName="FKi6bedmfqsqtijdsiy90b0hclp" tableName="sys_tenant">
+			<column name="register_user"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-28">
+		<createIndex indexName="FKj2sad6ygab9i7uakk824eyhgp" tableName="tenant_department">
+			<column name="tenant_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-29">
+		<createIndex indexName="FKjmrhjcohdadsdkmqmlrowxl2y" tableName="sys_role_aud">
+			<column name="rev"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-30">
+		<createIndex indexName="FKl8ps49sp3i961xno6qwnja44y" tableName="tenant_role">
+			<column name="tenant_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-31">
+		<createIndex indexName="FKn3t0aldt15v5mtam5pj1rh9pi" tableName="tenant_department_aud">
+			<column name="rev"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-32">
+		<createIndex indexName="authority_id" tableName="sys_role_authority">
+			<column name="authority_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-33">
+		<createIndex indexName="authority_id" tableName="tenant_role_authority">
+			<column name="authority_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-34">
+		<createIndex indexName="tenant_id" tableName="tenant_user">
+			<column name="tenant_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-35">
+		<createIndex indexName="tenant_org_id" tableName="tenant_user_org">
+			<column name="tenant_org_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-36">
+		<createIndex indexName="tenant_role_id" tableName="tenant_user">
+			<column name="tenant_role_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-37">
+		<createIndex indexName="user_id" tableName="sys_user_role">
+			<column name="user_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-38">
+		<createIndex indexName="user_id" tableName="tenant_user">
+			<column name="user_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-39">
+		<addForeignKeyConstraint baseColumnNames="rev" baseTableName="tenant_role_aud" constraintName="FK5r2mo4bigycd9fe2pue2dtkeo" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-40">
+		<addForeignKeyConstraint baseColumnNames="rev" baseTableName="sys_user_aud" constraintName="FK5t3kq3gusyik8ql4o9cv34h88" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-41">
+		<addForeignKeyConstraint baseColumnNames="rev" baseTableName="sys_tenant_aud" constraintName="FK5t9rfonowi0d2xucyuf7ywt5q" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-42">
+		<addForeignKeyConstraint baseColumnNames="rev" baseTableName="tenant_user_aud" constraintName="FK973hy275rjrqvddjivk7vd1jx" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-43">
+		<addForeignKeyConstraint baseColumnNames="rev" baseTableName="sys_authority_aud" constraintName="FKg69yq10ge5bovl97pmm6y1utj" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-44">
+		<addForeignKeyConstraint baseColumnNames="leader" baseTableName="tenant_department" constraintName="FKgxrc62glspp8soj4ouegc1vcq" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-45">
+		<addForeignKeyConstraint baseColumnNames="register_user" baseTableName="sys_tenant" constraintName="FKi6bedmfqsqtijdsiy90b0hclp" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-46">
+		<addForeignKeyConstraint baseColumnNames="tenant_id" baseTableName="tenant_department" constraintName="FKj2sad6ygab9i7uakk824eyhgp" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_tenant" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-47">
+		<addForeignKeyConstraint baseColumnNames="rev" baseTableName="sys_role_aud" constraintName="FKjmrhjcohdadsdkmqmlrowxl2y" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-48">
+		<addForeignKeyConstraint baseColumnNames="tenant_id" baseTableName="tenant_role" constraintName="FKl8ps49sp3i961xno6qwnja44y" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_tenant" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-49">
+		<addForeignKeyConstraint baseColumnNames="rev" baseTableName="tenant_department_aud" constraintName="FKn3t0aldt15v5mtam5pj1rh9pi" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-50">
+		<addForeignKeyConstraint baseColumnNames="authority_id" baseTableName="sys_role_authority" constraintName="sys_role_authority_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_authority" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-51">
+		<addForeignKeyConstraint baseColumnNames="role_id" baseTableName="sys_role_authority" constraintName="sys_role_authority_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_role" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-52">
+		<addForeignKeyConstraint baseColumnNames="role_id" baseTableName="sys_user_role" constraintName="sys_user_role_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_role" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-53">
+		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_user_role" constraintName="sys_user_role_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-54">
+		<addForeignKeyConstraint baseColumnNames="authority_id" baseTableName="tenant_role_authority" constraintName="tenant_role_authority_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_authority" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-55">
+		<addForeignKeyConstraint baseColumnNames="tenant_role_id" baseTableName="tenant_role_authority" constraintName="tenant_role_authority_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tenant_role" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-56">
+		<addForeignKeyConstraint baseColumnNames="tenant_id" baseTableName="tenant_user" constraintName="tenant_user_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_tenant" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-57">
+		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="tenant_user" constraintName="tenant_user_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-58">
+		<addForeignKeyConstraint baseColumnNames="tenant_role_id" baseTableName="tenant_user" constraintName="tenant_user_ibfk_3" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tenant_role" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-59">
+		<addForeignKeyConstraint baseColumnNames="tenant_org_id" baseTableName="tenant_user_org" constraintName="tenant_user_org_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tenant_department" validate="true"/>
+	</changeSet>
+	<changeSet author="zhaoyuan (generated)" id="1661247736422-60">
+		<addForeignKeyConstraint baseColumnNames="tenant_user_id" baseTableName="tenant_user_org" constraintName="tenant_user_org_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tenant_user" validate="true"/>
+	</changeSet>
 
 </databaseChangeLog>

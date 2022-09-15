@@ -1,87 +1,151 @@
 package com.yjy.climb.modules.auth.domain;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.Length;
+
+/**
+ * 租户用户表，即用户在该租户下的信息
+ */
 @Entity
 @Table(name = "tenant_user")
-public class TenantUser {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Audited
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class TenantUser extends AbstractAuditingEntity implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L;
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "id")
 	private long id;
 
+	/**
+	 * 职务
+	 */
 	@Basic
-	@Column(name = "tenant_id")
-	private long tenantId;
+	@Column(name = "job", length = 32)
+	@Length(max = 32, message = "职务最大支持32个字符")
+	@Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9]+$", message = "请勿输入特殊字符")
+	private String job;
 
+	/**
+	 * 工号
+	 */
 	@Basic
-	@Column(name = "user_id")
-	private long userId;
+	@Column(name = "job_no", length = 32)
+	@Length(max = 32, message = "工号最大支持32个字符")
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "请勿输入特殊字符")
+	private String jobNo;
 
+	/**
+	 * 入职时间
+	 */
+	@Basic
+	@Column(name = "entry_date")
+	private LocalDate entryDate;
+
+	/**
+	 * 是否激活
+	 */
 	@Basic
 	@Column(name = "activated")
 	private Boolean activated;
 
+	/**
+	 * 是否启用
+	 */
 	@Basic
 	@Column(name = "enabled")
 	private Boolean enabled;
 
+	/**
+	 * 员工姓名
+	 */
 	@Basic
-	@Column(name = "name")
+	@Column(name = "name", length = 32)
+	@Length(max = 32, message = "员工姓名最大支持32个字符")
+	@Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9]+$", message = "员工姓名请勿输入特殊字符")
 	private String name;
 
+	/**
+	 * 生日
+	 */
 	@Basic
 	@Column(name = "birthday")
-	private Date birthday;
+	private LocalDate birthday;
 
+	/**
+	 * 头像
+	 */
 	@Basic
-	@Column(name = "header_image")
+	@Column(name = "header_image", length = 256)
+	@Length(max = 256, message = "头像地址过长")
 	private String headerImage;
 
+	/**
+	 * 手机号
+	 */
 	@Basic
-	@Column(name = "mobile")
+	@Column(name = "mobile", length = 24)
+	@Pattern(regexp = "^1[0-9]{10}", message = "请输入正确的手机号")
 	private String mobile;
 
+	/**
+	 * 电子邮箱
+	 */
 	@Basic
-	@Column(name = "email")
+	@Column(name = "email", length = 64)
+	@Length(max = 64, message = "邮箱长度最大支持64个字符")
+	@Email(message = "请输入正确的邮箱地址")
 	private String email;
 
-	@Basic
-	@Column(name = "address")
-	private String address;
-
+	/**
+	 * 过期时间
+	 */
 	@Basic
 	@Column(name = "expired_date")
-	private Timestamp expiredDate;
+	private LocalDate expiredDate;
 
-	@Basic
-	@Column(name = "created_by")
-	private String createdBy;
+	/**
+	 * 租户
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tenant_id", referencedColumnName = "id")
+	private Tenant tenant;
 
-	@Basic
-	@Column(name = "created_date")
-	private Timestamp createdDate;
-
-	@Basic
-	@Column(name = "last_modified_by")
-	private String lastModifiedBy;
-
-	@Basic
-	@Column(name = "last_modified_date")
-	private Timestamp lastModifiedDate;
-
-	@Basic
-	@Column(name = "deleted")
-	private Boolean deleted;
+	/**
+	 * 该租户员工对应的系统用户
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private SysUser sysUser;
 
 	public long getId() {
 		return id;
@@ -91,20 +155,28 @@ public class TenantUser {
 		this.id = id;
 	}
 
-	public long getTenantId() {
-		return tenantId;
+	public String getJob() {
+		return job;
 	}
 
-	public void setTenantId(long tenantId) {
-		this.tenantId = tenantId;
+	public void setJob(String job) {
+		this.job = job;
 	}
 
-	public long getUserId() {
-		return userId;
+	public String getJobNo() {
+		return jobNo;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setJobNo(String jobNo) {
+		this.jobNo = jobNo;
+	}
+
+	public LocalDate getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(LocalDate entryDate) {
+		this.entryDate = entryDate;
 	}
 
 	public Boolean getActivated() {
@@ -131,11 +203,11 @@ public class TenantUser {
 		this.name = name;
 	}
 
-	public Date getBirthday() {
+	public LocalDate getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 
@@ -163,121 +235,27 @@ public class TenantUser {
 		this.email = email;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Timestamp getExpiredDate() {
+	public LocalDate getExpiredDate() {
 		return expiredDate;
 	}
 
-	public void setExpiredDate(Timestamp expiredDate) {
+	public void setExpiredDate(LocalDate expiredDate) {
 		this.expiredDate = expiredDate;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
+	public Tenant getTenant() {
+		return tenant;
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setTenant(Tenant tenant) {
+		this.tenant = tenant;
 	}
 
-	public Timestamp getCreatedDate() {
-		return createdDate;
+	public SysUser getSysUser() {
+		return sysUser;
 	}
 
-	public void setCreatedDate(Timestamp createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-
-	public void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
-
-	public Timestamp getLastModifiedDate() {
-		return lastModifiedDate;
-	}
-
-	public void setLastModifiedDate(Timestamp lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	public Boolean getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		TenantUser that = (TenantUser) o;
-
-		if (id != that.id) return false;
-		if (tenantId != that.tenantId) return false;
-		if (userId != that.userId) return false;
-		if (activated != null ? !activated.equals(that.activated) : that.activated != null)
-			return false;
-		if (enabled != null ? !enabled.equals(that.enabled) : that.enabled != null)
-			return false;
-		if (name != null ? !name.equals(that.name) : that.name != null) return false;
-		if (birthday != null ? !birthday.equals(that.birthday) : that.birthday != null)
-			return false;
-		if (headerImage != null ? !headerImage.equals(that.headerImage) : that.headerImage != null)
-			return false;
-		if (mobile != null ? !mobile.equals(that.mobile) : that.mobile != null)
-			return false;
-		if (email != null ? !email.equals(that.email) : that.email != null) return false;
-		if (address != null ? !address.equals(that.address) : that.address != null)
-			return false;
-		if (expiredDate != null ? !expiredDate.equals(that.expiredDate) : that.expiredDate != null)
-			return false;
-		if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null)
-			return false;
-		if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null)
-			return false;
-		if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
-			return false;
-		if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
-			return false;
-		if (deleted != null ? !deleted.equals(that.deleted) : that.deleted != null)
-			return false;
-
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + (int) (tenantId ^ (tenantId >>> 32));
-		result = 31 * result + (int) (userId ^ (userId >>> 32));
-		result = 31 * result + (activated != null ? activated.hashCode() : 0);
-		result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
-		result = 31 * result + (headerImage != null ? headerImage.hashCode() : 0);
-		result = 31 * result + (mobile != null ? mobile.hashCode() : 0);
-		result = 31 * result + (email != null ? email.hashCode() : 0);
-		result = 31 * result + (address != null ? address.hashCode() : 0);
-		result = 31 * result + (expiredDate != null ? expiredDate.hashCode() : 0);
-		result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
-		result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-		result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
-		result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
-		result = 31 * result + (deleted != null ? deleted.hashCode() : 0);
-		return result;
+	public void setSysUser(SysUser sysUser) {
+		this.sysUser = sysUser;
 	}
 }

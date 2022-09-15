@@ -3,24 +3,34 @@ package com.yjy.climb.modules.auth.domain;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -29,6 +39,9 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class SysUser extends AbstractAuditingEntity implements Serializable {
 
 	@Serial
@@ -85,12 +98,27 @@ public class SysUser extends AbstractAuditingEntity implements Serializable {
 
 	@Basic
 	@Column(name = "activated")
+	@JsonIgnore
 	private Boolean activated;
 
 	@Basic
 	@Column(name = "enabled")
+	@JsonIgnore
 	private Boolean enabled;
 
+	/**
+	 * 用户对应的系统角色
+	 */
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "sys_user_role",
+			joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
+			inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") }
+	)
+	@BatchSize(size = 20)
+	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private Set<SysRole> sysRoles;
 
 	public Long getId() {
 		return id;
@@ -180,52 +208,11 @@ public class SysUser extends AbstractAuditingEntity implements Serializable {
 		this.enabled = enabled;
 	}
 
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		SysUser sysUser = (SysUser) o;
-
-		if (id != sysUser.id) return false;
-		if (nickName != null ? !nickName.equals(sysUser.nickName) : sysUser.nickName != null)
-			return false;
-		if (headerImage != null ? !headerImage.equals(sysUser.headerImage) : sysUser.headerImage != null)
-			return false;
-		if (login != null ? !login.equals(sysUser.login) : sysUser.login != null)
-			return false;
-		if (password != null ? !password.equals(sysUser.password) : sysUser.password != null)
-			return false;
-		if (mobile != null ? !mobile.equals(sysUser.mobile) : sysUser.mobile != null)
-			return false;
-		if (email != null ? !email.equals(sysUser.email) : sysUser.email != null)
-			return false;
-		if (birthday != null ? !birthday.equals(sysUser.birthday) : sysUser.birthday != null)
-			return false;
-		if (gender != null ? !gender.equals(sysUser.gender) : sysUser.gender != null)
-			return false;
-		if (activated != null ? !activated.equals(sysUser.activated) : sysUser.activated != null)
-			return false;
-		if (enabled != null ? !enabled.equals(sysUser.enabled) : sysUser.enabled != null)
-			return false;
-
-		return true;
+	public Set<SysRole> getSysRoles() {
+		return sysRoles;
 	}
 
-	@Override
-	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + (nickName != null ? nickName.hashCode() : 0);
-		result = 31 * result + (headerImage != null ? headerImage.hashCode() : 0);
-		result = 31 * result + (login != null ? login.hashCode() : 0);
-		result = 31 * result + (password != null ? password.hashCode() : 0);
-		result = 31 * result + (mobile != null ? mobile.hashCode() : 0);
-		result = 31 * result + (email != null ? email.hashCode() : 0);
-		result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
-		result = 31 * result + (gender != null ? gender.hashCode() : 0);
-		result = 31 * result + (activated != null ? activated.hashCode() : 0);
-		result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
-		return result;
+	public void setSysRoles(Set<SysRole> sysRoles) {
+		this.sysRoles = sysRoles;
 	}
 }

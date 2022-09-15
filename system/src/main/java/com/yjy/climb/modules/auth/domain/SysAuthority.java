@@ -12,24 +12,35 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.yjy.climb.modules.auth.domain.enums.AuthorityScope;
+import com.yjy.climb.modules.auth.domain.enums.MenuType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * 权限表，可以存在菜单、按钮和权限标识
+ */
 @Entity
 @Table(name = "sys_authority")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class SysAuthority extends AbstractAuditingEntity implements Serializable {
 
 	@Serial
@@ -38,14 +49,20 @@ public class SysAuthority extends AbstractAuditingEntity implements Serializable
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "id")
-	private long id;
+	private Long id;
 
+	/**
+	 * 权限应用范围，分系统权限和租户权限，系统权限由系统分配，租户权限可以由租户管理员分配
+	 */
 	@Basic
 	@Column(name = "scope")
 	@Enumerated(value = EnumType.STRING)
-	@NotNull(message = "未设置系统权限")
+	@NotNull(message = "未设置权限范围")
 	private AuthorityScope scope;
 
+	/**
+	 * 权限名称
+	 */
 	@Basic
 	@Column(name = "title")
 	@Length(max = 32, message = "标题过长")
@@ -54,57 +71,94 @@ public class SysAuthority extends AbstractAuditingEntity implements Serializable
 	@Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+$", message = "标题仅支持汉字、字母和数字")
 	private String title;
 
+	/**
+	 * 权限icon图标
+	 */
 	@Basic
 	@Column(name = "icon", length = 24)
 	@Length(max = 24, message = "icon最大长度是24个字符")
 	private String icon;
 
+	/**
+	 * 权限的父级ID，为了性能考虑，此处不使用ManyToOne形式关联
+	 */
 	@Basic
 	@Column(name = "parent_id")
 	private Long parentId;
 
+	/**
+	 * 权限菜单排序
+	 */
 	@Basic
 	@Column(name = "menu_sort")
+	@Min(value = 0, message = "排序值必须大于0")
 	private Integer menuSort;
 
+	/**
+	 * 菜单链接地址
+	 */
 	@Basic
-	@Column(name = "url")
+	@Column(name = "url", length = 256)
+	@Length(max = 256, message = "链接不要超过256个字符")
 	private String url;
 
+	/**
+	 * 该菜单是否在新页面打开
+	 */
 	@Basic
 	@Column(name = "blank_target")
 	private Boolean blankTarget;
 
+	/**
+	 * 菜单类型
+	 */
 	@Basic
 	@Column(name = "menu_type")
-	private String menuType;
+	@Enumerated(value = EnumType.STRING)
+	private MenuType menuType;
 
+	/**
+	 * 是否显示，默认只有菜单是需要显示的
+	 */
 	@Basic
 	@Column(name = "is_show")
-	private Boolean isShow;
+	private Boolean show;
 
+	/**
+	 * 权限标识符
+	 */
 	@Basic
-	@Column(name = "permission")
+	@Column(name = "permission", length = 32)
+	@Length(max = 32, message = "权限标识不要超过32个字符")
+	@Pattern(regexp = "^[:A-Za-z0-9_]+$", message = "权限标识仅支持字母、数字、冒号和下划线")
 	private String permission;
 
+	/**
+	 * 是否是默认跳转主页，如果是默认跳转主页，用户完成登录后会跳转至该页面
+	 */
 	@Basic
 	@Column(name = "default_redirect")
 	private Boolean defaultRedirect;
 
+	/**
+	 * 默认跳转权重，如果存在多个默认跳转页面，则跳转到权重最高的页面
+	 */
 	@Basic
 	@Column(name = "redirect_weight")
 	private Integer redirectWeight;
 
+	/**
+	 * 是否启用
+	 */
 	@Basic
 	@Column(name = "enabled")
 	private Boolean enabled;
 
-
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -164,20 +218,20 @@ public class SysAuthority extends AbstractAuditingEntity implements Serializable
 		this.blankTarget = blankTarget;
 	}
 
-	public String getMenuType() {
+	public MenuType getMenuType() {
 		return menuType;
 	}
 
-	public void setMenuType(String menuType) {
+	public void setMenuType(MenuType menuType) {
 		this.menuType = menuType;
 	}
 
 	public Boolean getShow() {
-		return isShow;
+		return show;
 	}
 
 	public void setShow(Boolean show) {
-		isShow = show;
+		this.show = show;
 	}
 
 	public String getPermission() {
@@ -210,59 +264,5 @@ public class SysAuthority extends AbstractAuditingEntity implements Serializable
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
-	}
-
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		SysAuthority that = (SysAuthority) o;
-
-		if (id != that.id) return false;
-		if (scope != null ? !scope.equals(that.scope) : that.scope != null) return false;
-		if (title != null ? !title.equals(that.title) : that.title != null) return false;
-		if (icon != null ? !icon.equals(that.icon) : that.icon != null) return false;
-		if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null)
-			return false;
-		if (menuSort != null ? !menuSort.equals(that.menuSort) : that.menuSort != null)
-			return false;
-		if (url != null ? !url.equals(that.url) : that.url != null) return false;
-		if (blankTarget != null ? !blankTarget.equals(that.blankTarget) : that.blankTarget != null)
-			return false;
-		if (menuType != null ? !menuType.equals(that.menuType) : that.menuType != null)
-			return false;
-		if (isShow != null ? !isShow.equals(that.isShow) : that.isShow != null)
-			return false;
-		if (permission != null ? !permission.equals(that.permission) : that.permission != null)
-			return false;
-		if (defaultRedirect != null ? !defaultRedirect.equals(that.defaultRedirect) : that.defaultRedirect != null)
-			return false;
-		if (redirectWeight != null ? !redirectWeight.equals(that.redirectWeight) : that.redirectWeight != null)
-			return false;
-		if (enabled != null ? !enabled.equals(that.enabled) : that.enabled != null)
-			return false;
-
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + (scope != null ? scope.hashCode() : 0);
-		result = 31 * result + (title != null ? title.hashCode() : 0);
-		result = 31 * result + (icon != null ? icon.hashCode() : 0);
-		result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
-		result = 31 * result + (menuSort != null ? menuSort.hashCode() : 0);
-		result = 31 * result + (url != null ? url.hashCode() : 0);
-		result = 31 * result + (blankTarget != null ? blankTarget.hashCode() : 0);
-		result = 31 * result + (menuType != null ? menuType.hashCode() : 0);
-		result = 31 * result + (isShow != null ? isShow.hashCode() : 0);
-		result = 31 * result + (permission != null ? permission.hashCode() : 0);
-		result = 31 * result + (defaultRedirect != null ? defaultRedirect.hashCode() : 0);
-		result = 31 * result + (redirectWeight != null ? redirectWeight.hashCode() : 0);
-		result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
-		return result;
 	}
 }

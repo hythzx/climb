@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 
 import com.yjy.climb.exception.BadRequestAlertException;
 import com.yjy.climb.exception.management.EmailAlreadyUsedException;
@@ -24,7 +25,9 @@ import org.zalando.problem.Status;
 import org.zalando.problem.StatusType;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
+import org.zalando.problem.spring.web.advice.validation.ConstraintViolationAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
+import org.zalando.problem.violations.Violation;
 import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.web.util.HeaderUtil;
 
@@ -48,7 +51,7 @@ import static com.yjy.climb.exception.ErrorConstants.ERR_MSG;
  * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
  */
 @ControllerAdvice
-public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
+public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait, ConstraintViolationAdviceTrait {
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
     private static final String MESSAGE_KEY = "message";
@@ -127,6 +130,20 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 	}
 
 	@ExceptionHandler
+	@Override
+	public ResponseEntity<Problem> handleConstraintViolation(ConstraintViolationException exception, NativeWebRequest request) {
+		List<Violation> violations = exception.getConstraintViolations().stream().map(this::createViolation).toList();
+		Problem problem = Problem
+				.builder()
+				.withTitle("参数校验失败")
+				.with(VIOLATIONS_KEY, violations)
+				.withDetail("error.validation")
+				.withStatus(defaultConstraintViolationStatus())
+				.build();
+		return create(exception, problem, request);
+	}
+
+	@ExceptionHandler
 	public ResponseEntity<Problem> handleRuntimeException(RuntimeException ex, NativeWebRequest request){
 		Problem problem = Problem
 				.builder()
@@ -135,6 +152,8 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 				.build();
 		return create(ex, problem, request);
 	}
+
+
 
     @Override
     public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {

@@ -27,6 +27,8 @@ public final class ErrorConstants {
 		public static final String ENTITY_NAME = "system";
 
 		public static final Error NOT_NULL = new Error("notnull", "参数不能为空");
+
+		public static final Error IS_NOT_EXIST = new Error("isnull", "数据不存在");
 	}
 
 	/**

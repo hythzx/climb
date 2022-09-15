@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Mapstruct 单元测试
  */

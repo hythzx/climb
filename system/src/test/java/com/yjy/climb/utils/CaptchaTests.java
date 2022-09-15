@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -22,6 +23,7 @@ public class CaptchaTests {
 	private final Logger log = getLogger(CaptchaTests.class);
 
 	@Autowired
+	@Qualifier(value = "imageCaptchaService")
 	private ICaptchaService iCaptchaService;
 
 	ICaptchaResponse captchaInfo;

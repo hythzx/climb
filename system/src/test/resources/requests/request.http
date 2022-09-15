@@ -1,0 +1,22 @@
+### 用户名密码登录
+POST http://localhost:8080/api/authenticate
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin",
+  "rememberMe": true
+}
+
+> {% client.global.set("auth_token", response.body.id_token); %}
+
+###
+POST http://localhost:8080/api/roles
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "roleCode": "AAAAAAAAAA",
+  "name": "BBBBBBBBBBB",
+  "enable": true
+}
