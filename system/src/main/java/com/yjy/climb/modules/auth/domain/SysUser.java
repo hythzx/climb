@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yjy.climb.modules.auth.domain.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -93,8 +96,8 @@ public class SysUser extends AbstractAuditingEntity implements Serializable {
 
 	@Basic
 	@Column(name = "gender", length = 6)
-	@Length(max = 6)
-	private String gender;
+	@Enumerated(value = EnumType.STRING)
+	private Gender gender;
 
 	@Basic
 	@Column(name = "activated")
@@ -184,11 +187,11 @@ public class SysUser extends AbstractAuditingEntity implements Serializable {
 		this.birthday = birthday;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

@@ -22,11 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Transactional
 @Slf4j
 @RequestMapping("/api")
 @Tag(name = "角色管理", description = "角色管理接口，该接口仅对系统管理员开放")
-@PreAuthorize(value = "hasAnyAuthority('system:all', 'system:write') and hasAnyRole('ADMIN')")
+@PreAuthorize(value = "hasAnyAuthority('system:all', 'system:write') or hasAnyRole('ADMIN')")
 public class RoleManagementResource {
 
 	private final RoleManagementService roleManagementService;

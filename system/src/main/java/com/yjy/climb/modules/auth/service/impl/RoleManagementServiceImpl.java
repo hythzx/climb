@@ -106,6 +106,7 @@ public class RoleManagementServiceImpl implements BaseService, RoleManagementSer
 	 */
 	@Override
 	public RoleWithAuthorityDTO removeAuthorities(Long id, List<Long> authorities) {
+
 		return null;
 	}
 

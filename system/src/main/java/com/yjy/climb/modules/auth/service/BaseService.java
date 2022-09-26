@@ -31,7 +31,7 @@ public interface BaseService {
 	 * @param <E> Entity
 	 * @param <R> Repository
 	 */
-	default  <E extends AbstractAuditingEntity, R extends JpaRepository<E, Long>> E getEntityElseThrow(Long id, R repository){
+	default  <ID, E extends AbstractAuditingEntity, R extends JpaRepository<E, ID>> E getEntityElseThrow(ID id, R repository){
 		if (null == id){
 			throw new SystemException(System.NOT_NULL.getErrorMsg(), System.NOT_NULL.getErrorCode());
 		}
@@ -48,15 +48,28 @@ public interface BaseService {
 	/**
 	 * 获取所有数据
 	 */
-	default <E extends AbstractAuditingEntity, R extends JpaRepository<E, Long>> List<E> findAll(R repository){
+	default <ID, E extends AbstractAuditingEntity, R extends JpaRepository<E, ID>> List<E> findAll(R repository){
 		return repository.findAll();
 	}
 
 	/**
 	 * 获取分页数据
 	 */
-	default <E extends AbstractAuditingEntity, R extends JpaRepository<E, Long>> Page<E> findAll(R repository, Pageable pageable){
+	default <ID, E extends AbstractAuditingEntity, R extends JpaRepository<E, ID>> Page<E> findAll(R repository, Pageable pageable){
 		return repository.findAll(pageable);
+	}
+
+	/**
+	 * 根据ID列表获取entity列表
+	 * @param repository JPA Repository
+	 * @param ids id列表
+	 * @return
+	 * @param <ID> 主键类型
+	 * @param <E> entity
+	 * @param <R> repository
+	 */
+	default <ID, E extends AbstractAuditingEntity, R extends JpaRepository<E, ID>> List<E> findAllByIds(R repository, Iterable<ID> ids){
+		return repository.findAllById(ids);
 	}
 
 	/**
@@ -68,7 +81,7 @@ public interface BaseService {
 	 * @param <E> Entity
 	 * @param <R> Repository
 	 */
-	default  <E extends AbstractAuditingEntity, R extends JpaRepository<E, Long>> Optional<E> getEntity(Long id, R repository){
+	default  <ID, E extends AbstractAuditingEntity, R extends JpaRepository<E, ID>> Optional<E> getEntity(ID id, R repository){
 		Optional<E> entityOptional = repository.findById(id);
 		if (entityOptional.isEmpty() || entityOptional.get().isDeleted()) return Optional.empty();
 		return entityOptional;
