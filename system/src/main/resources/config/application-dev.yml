@@ -67,15 +67,3 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
-
-application:
-  ali-sms:
-    region-id: cn-hangzhou
-    access-key: LTAIXs74J7zTcT3m
-    secret-key: flghFHQsFO9XOZHp3JvEqWO1wMxKaW
-    sign: 医家医
-    templates:
-      verify:
-        description: 发送短信验证码
-        code: SMS_154575180
-        params: code
