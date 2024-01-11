@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.6</version>
+		<version>2.7.10</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<modules>
@@ -40,7 +40,7 @@
 	<properties>
 		<maven.version>3.8.5</maven.version>
 		<java.version>17</java.version>
-		<jhipster-dependencies.version>7.8.1</jhipster-dependencies.version>
+		<jhipster-dependencies.version>7.9.3</jhipster-dependencies.version>
 		<spring-boot.version>2.6.6</spring-boot.version>
 		<druid.version>1.2.11</druid.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
@@ -174,7 +174,7 @@
 
 	<repositories>
 		<repository>
-			<url>http://nexus.aiyuninfo.com/content/groups/maven-public/</url>
+			<url>http://nexus.yjy-group.com/content/groups/maven-public/</url>
 			<name>aiyun</name>
 			<id>aiyun</id>
 		</repository>
@@ -183,7 +183,7 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<url>http://nexus.aiyuninfo.com/content/groups/maven-public/</url>
+			<url>http://nexus.yjy-group.com/content/groups/maven-public/</url>
 			<name>aiyun</name>
 			<id>aiyun</id>
 		</pluginRepository>
