@@ -67,3 +67,15 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
+
+application:
+  ali-sms:
+    region-id: #aliyun-region-id
+    access-key: #aliyun-access-key
+    secret-key: #aliyun-secret-key
+    sign: #aliyun-sign
+    templates:
+      verify:
+        description: 发送短信验证码
+        code: SMS_154575180
+        params: code
